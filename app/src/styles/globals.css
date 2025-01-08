@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*Reset css */
+
+*, ::before, ::after{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+html, body{
+  overflow-x: clip;
+  scroll-behavior: smooth;
+}
+
+li{
+  list-style: none;
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+
+
+@media (min-width: 640px) {
+
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 1024px) {
+
+}
+
+
+@media (min-width: 1280px) {
+}
+
+
+@media (min-width: 1536px) {
+
+}
