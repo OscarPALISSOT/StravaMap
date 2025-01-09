@@ -1,6 +1,10 @@
+import StravaConnect from "@/components/StravaConnect";
 
 export default function Home() {
-  return (
-    <h1>Strava Map</h1>
-  );
+    return (
+        <main>
+            <h1>Strava Map</h1>
+            <StravaConnect/>
+        </main>
+    );
 }
