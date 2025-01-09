@@ -1,21 +1,18 @@
 'use client'
 
-import {useCallback, useState} from "react";
 import {getStravaAuthUrl} from "@/modules/getStravaAuthUrl";
 import Image from "next/image";
 import Link from "next/link";
+import {useAuth} from "@/Contexts/authContext";
 
 const StravaConnect = () => {
 
-    const [authToken, setAuthToken] = useState<string>();
 
-    const signOut = useCallback(() => {
-        setAuthToken(undefined);
-    }, []);
+    const { isAuthenticated, signOut } = useAuth();
 
     return (
         <>
-            {authToken === undefined &&
+            {!isAuthenticated &&
                 <Link
                     href={getStravaAuthUrl()}
                 >
@@ -28,7 +25,7 @@ const StravaConnect = () => {
                     />
                 </Link>
             }
-            {authToken !== undefined && <button onClick={signOut}>Sign out</button>}
+            {isAuthenticated && <button onClick={signOut}>Sign out</button>}
         </>
     )
 }
