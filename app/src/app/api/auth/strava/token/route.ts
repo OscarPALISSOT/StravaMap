@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
         console.log('token', access_token);
 
-        const responseWithCookie = NextResponse.redirect(new URL('/', request.url));
+        const responseWithCookie = NextResponse.redirect(new URL('/map', request.url));
         responseWithCookie.cookies.set('strava_bearer_token', access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',

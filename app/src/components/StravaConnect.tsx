@@ -7,7 +7,6 @@ import {useAuth} from "@/Contexts/authContext";
 
 const StravaConnect = () => {
 
-
     const { isAuthenticated, signOut } = useAuth();
 
     return (
