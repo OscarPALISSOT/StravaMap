@@ -1,7 +1,7 @@
 import type {Metadata} from "next";
 import "@/styles/globals.css";
 import {ReactNode} from "react";
-import {AuthProvider} from "@/Contexts/authContext";
+import SessionWrapper from "@/components/sessionWrapper";
 
 
 export const metadata: Metadata = {
@@ -11,12 +11,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: Readonly<{ children: ReactNode; }>) {
     return (
-        <html lang="en">
-        <AuthProvider>
+        <SessionWrapper>
+            <html lang="en">
             <body>
             {children}
             </body>
-        </AuthProvider>
-        </html>
+            </html>
+        </SessionWrapper>
     );
 }

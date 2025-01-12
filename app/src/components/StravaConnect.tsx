@@ -1,30 +1,25 @@
 'use client'
 
-import {getStravaAuthUrl} from "@/modules/getStravaAuthUrl";
 import Image from "next/image";
-import Link from "next/link";
-import {useAuth} from "@/Contexts/authContext";
+import {signIn, signOut, useSession} from "next-auth/react";
 
-const StravaConnect = () => {
+const StravaConnect =  () => {
 
-    const { isAuthenticated, signOut } = useAuth();
+    const {data: session} = useSession();
 
     return (
         <>
-            {!isAuthenticated &&
-                <Link
-                    href={getStravaAuthUrl()}
-                >
-                    <Image
-                        className={'h-12 w-auto'}
-                        src={'/btn_strava_connectwith_orange.png'}
-                        width={386}
-                        height={96}
-                        alt={'Connect with Strava'}
-                    />
-                </Link>
+            {!session &&
+                <Image
+                    className={'h-12 w-auto'}
+                    src={'/btn_strava_connectwith_orange.png'}
+                    width={386}
+                    height={96}
+                    alt={'Connect with Strava'}
+                    onClick={() => signIn('strava', {callbackUrl: '/map'})}
+                />
             }
-            {isAuthenticated && <button onClick={signOut}>Sign out</button>}
+            {session && <button onClick={() => signOut()}>Sign out</button>}
         </>
     )
 }
