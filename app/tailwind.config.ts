@@ -16,6 +16,9 @@ export default {
         'background': 'var(--background)',
         'text': 'var(--text)',
       },
+      fontFamily: {
+        geistMono: ['var(--inter)', 'serif'],
+      },
     },
   },
   plugins: [],

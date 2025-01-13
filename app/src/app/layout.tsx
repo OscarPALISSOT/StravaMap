@@ -1,10 +1,17 @@
 import type {Metadata} from "next";
 import "@/styles/globals.css";
 import "@/styles/variable.css";
+import {Inter} from 'next/font/google';
 import {ReactNode} from "react";
 import SessionWrapper from "@/components/sessionWrapper";
 import ThemeProviderWrap from "@/components/themeProvider";
 
+
+const inter = Inter({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--inter',
+})
 
 export const metadata: Metadata = {
     title: 'Strava Map',
@@ -15,7 +22,7 @@ export default function RootLayout({children}: Readonly<{ children: ReactNode; }
     return (
         <SessionWrapper>
             <html lang="en" suppressHydrationWarning={true}>
-            <body className={'bg-background dark:bg-text'}>
+            <body className={`${inter.variable} bg-background dark:bg-text text-text dark:text-background`}>
             <ThemeProviderWrap>
                 {children}
             </ThemeProviderWrap>
