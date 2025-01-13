@@ -17,3 +17,4 @@ J'ai réalisé ce projet en utilisant les technologies suivantes :
 - **NextJS** : pour le rendu côté serveur.
 - **Tailwind** : pour le style du site web.
 - **Motion** : pour les animations.
+- **NextAuth.js** : pour la gestion de l'authentification.
