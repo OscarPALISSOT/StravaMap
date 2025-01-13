@@ -1,7 +1,9 @@
 import type {Metadata} from "next";
 import "@/styles/globals.css";
+import "@/styles/variable.css";
 import {ReactNode} from "react";
 import SessionWrapper from "@/components/sessionWrapper";
+import ThemeProviderWrap from "@/components/themeProvider";
 
 
 export const metadata: Metadata = {
@@ -12,9 +14,11 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: Readonly<{ children: ReactNode; }>) {
     return (
         <SessionWrapper>
-            <html lang="en">
-            <body>
-            {children}
+            <html lang="en" suppressHydrationWarning={true}>
+            <body className={'bg-background dark:bg-text'}>
+            <ThemeProviderWrap>
+                {children}
+            </ThemeProviderWrap>
             </body>
             </html>
         </SessionWrapper>
