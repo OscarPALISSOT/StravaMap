@@ -1,4 +1,7 @@
 import Image from "next/image";
+import Button from "@/components/button";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faGear} from '@fortawesome/free-solid-svg-icons'
 
 interface TopBarProps {
     username: string;
@@ -7,8 +10,10 @@ interface TopBarProps {
 
 const TopBar = ({username, picture}: TopBarProps) => {
     return (
-        <div className={'h-14 px-3 w-full border-b border-text dark:border-background flex items-center'}>
-            <span className={'h-full flex items-center p-3'}>
+        <div
+            className={'h-14 px-3 w-full border-b border-text dark:border-background flex items-center justify-between'}>
+            <span className={'h-full flex items-center'}>
+                <span className={'h-full flex items-center p-3'}>
                 <Image
                     className={'h-full w-auto object-cover rounded-full'}
                     src={picture}
@@ -16,8 +21,12 @@ const TopBar = ({username, picture}: TopBarProps) => {
                     width={64}
                     height={64}
                 />
+                </span>
+                <span className={'font-semibold'}>{username}</span>
             </span>
-            <span className={'font-semibold'}>{username}</span>
+            <span>
+                <Button label={<FontAwesomeIcon icon={faGear} />}/>
+            </span>
         </div>
     )
 }

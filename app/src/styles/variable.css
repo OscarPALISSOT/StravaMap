@@ -1,7 +1,7 @@
 :root{
-    --primary: #e0e0dfff;
+    --primary: #474747;
     --secondary: #cacaca;
-    --primaryHover: rgba(224, 224, 223, 0.8);
+    --primaryHover: #656565;
     --secondaryHover: rgba(202, 202, 202, 0.8);
     --background: #ecedec;
     --text: #373737;
