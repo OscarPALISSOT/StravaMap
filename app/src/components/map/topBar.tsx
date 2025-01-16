@@ -2,6 +2,7 @@ import Image from "next/image";
 import Button from "@/components/button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faGear} from '@fortawesome/free-solid-svg-icons'
+import ThemeSwitch from "@/components/themeSwitch";
 
 interface TopBarProps {
     username: string;
@@ -24,8 +25,9 @@ const TopBar = ({username, picture}: TopBarProps) => {
                 </span>
                 <span className={'font-semibold'}>{username}</span>
             </span>
-            <span>
+            <span className={'h-full flex items-center gap-2'}>
                 <Button label={<FontAwesomeIcon icon={faGear} />}/>
+                <ThemeSwitch/>
             </span>
         </div>
     )

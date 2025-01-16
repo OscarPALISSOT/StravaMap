@@ -1,8 +1,8 @@
 :root{
-    --primary: #474747;
-    --secondary: #cacaca;
-    --primaryHover: #656565;
-    --secondaryHover: rgba(202, 202, 202, 0.8);
+    --primaryDark: #474747;
+    --primary: #d5d5d5;
+    --primaryDarkHover: #656565;
+    --primaryHover: #c1c1c1;
     --background: #ecedec;
     --text: #373737;
 }
