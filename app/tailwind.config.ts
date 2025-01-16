@@ -10,9 +10,9 @@ export default {
     extend: {
       colors: {
         'primary': 'var(--primary)',
-        'secondary': 'var(--secondary)',
+        'primaryDark': 'var(--primaryDark)',
         'primaryHover': 'var(--primaryHover)',
-        'secondaryHover': 'var(--secondaryHover)',
+        'primaryDarkHover': 'var(--primaryDarkHover)',
         'background': 'var(--background)',
         'text': 'var(--text)',
       },
@@ -21,5 +21,6 @@ export default {
       },
     },
   },
+  darkMode: 'class',
   plugins: [],
 } satisfies Config;

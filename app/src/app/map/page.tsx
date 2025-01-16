@@ -1,4 +1,4 @@
-import SideNav from "@/components/map/sideNav";
+import SideNav from "@/components/map/sidenav/sideNav";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/lib/auth";
 import {redirect} from "next/navigation";
@@ -16,13 +16,16 @@ export default async function Home() {
     const activities = await getActivities(session!.access_token);
     return (
         <main className={'flex flex-row'}>
-            <SideNav/>
+            <SideNav
+                activities={activities}
+            />
             <div className={'h-screen w-full flex flex-col'}>
                 <TopBar
                     username={session.user!.name as string}
                     picture={session.user!.image as string}
                 />
-                <div className={'h-full w-full bg-gray-400'}></div>
+                <div className={'h-full w-full overflow-hidden bg-gray-400'}>
+                </div>
             </div>
         </main>
     );

@@ -24,10 +24,12 @@ export default function RootLayout({children}: Readonly<{ children: ReactNode; }
     return (
         <SessionWrapper>
             <html lang="en" suppressHydrationWarning={true}>
-            <body className={`${inter.variable} bg-background dark:bg-text text-text dark:text-background`}>
-            <ThemeProviderWrap>
-                {children}
-            </ThemeProviderWrap>
+            <body className={`${inter.variable} text-text dark:text-background`}>
+            <main className={'bg-background dark:bg-text'}>
+                <ThemeProviderWrap>
+                    {children}
+                </ThemeProviderWrap>
+            </main>
             </body>
             </html>
         </SessionWrapper>
