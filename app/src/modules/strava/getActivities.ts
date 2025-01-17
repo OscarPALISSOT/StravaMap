@@ -4,7 +4,7 @@ import axios from "axios";
 const GetActivities = async (
     bearerToken: string,
     page: number = 1,
-    perPage: number = 30
+    perPage: number = 150
 ): Promise<StravaActivityType[]> => {
     const url = process.env.STRAVA_API_URL + '/athlete/activities';
 

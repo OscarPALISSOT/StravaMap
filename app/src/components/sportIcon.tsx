@@ -4,7 +4,7 @@ import {
     faPersonHiking,
     faPersonRunning,
     faPersonSkiing,
-    faPersonSkiingNordic
+    faPersonSkiingNordic, faPersonSnowboarding
 } from "@fortawesome/free-solid-svg-icons";
 
 interface SportIconProps {
@@ -19,7 +19,10 @@ const SportIcon = ({sport_type}: SportIconProps) => {
             {sport_type === 'TrailRun' && <FontAwesomeIcon icon={faPersonRunning} />}
             {sport_type === 'Hike' && <FontAwesomeIcon icon={faPersonHiking} />}
             {sport_type === 'Ride' && <FontAwesomeIcon icon={faBicycle} />}
+            {sport_type === 'EBikeRide' && <FontAwesomeIcon icon={faBicycle} />}
+            {sport_type === 'EMountainBikeRide' && <FontAwesomeIcon icon={faBicycle} />}
             {sport_type === 'AlpineSki' && <FontAwesomeIcon icon={faPersonSkiing} />}
+            {sport_type === 'Snowboard' && <FontAwesomeIcon icon={faPersonSnowboarding} />}
             {sport_type === 'BackcountrySki' && <FontAwesomeIcon icon={faPersonSkiingNordic} />}
         </div>
     )

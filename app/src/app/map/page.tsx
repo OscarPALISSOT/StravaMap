@@ -5,6 +5,7 @@ import {redirect} from "next/navigation";
 import TopBar from "@/components/map/topBar";
 import SessionType from "@/types/session";
 import getActivities from "@/modules/strava/getActivities";
+import Map from "@/components/map/map";
 
 export default async function Home() {
 
@@ -24,7 +25,10 @@ export default async function Home() {
                     username={session.user!.name as string}
                     picture={session.user!.image as string}
                 />
-                <div className={'h-full w-full overflow-hidden bg-gray-400'}>
+                <div className={'h-full w-full overflow-hidden '}>
+                    <Map
+                        activities={activities}
+                    />
                 </div>
             </div>
         </main>

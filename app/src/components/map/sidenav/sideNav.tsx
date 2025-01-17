@@ -12,7 +12,7 @@ const SideNav = ({activities}: SideNavProps) => {
             <div className={'h-14 flex items-center justify-center shrink-0'}>
                 <SearchBar placeholder={'Rechercher une activité'}/>
             </div>
-            <div className={'px-2 py-1 overflow-y-scroll [&::-webkit-scrollbar-track]:bg-yellow-500'}>
+            <div className={'px-2 py-1 overflow-y-scroll'}>
                 {activities.map((activity: StravaActivityType, index: number) => (
                     <ActivityCard key={index} activity={activity}/>
                 ))}

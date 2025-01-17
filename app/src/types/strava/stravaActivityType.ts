@@ -11,6 +11,10 @@ type StravaActivityType = {
     start_date: string;
     start_date_local: string;
     timezone: string;
+    map: {
+        id: number;
+        summary_polyline: string;
+    }
 }
 
 export default StravaActivityType;
