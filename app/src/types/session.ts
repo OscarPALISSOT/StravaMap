@@ -5,6 +5,7 @@ type SessionType = {
         image: string,
     },
     access_token: string,
+    expires_at: number,
 }
 
 export default SessionType;

@@ -10,7 +10,8 @@ import Map from "@/components/map/map";
 export default async function Home() {
 
     const session = (await getServerSession(authOptions)) as SessionType;
-    if (!session) {
+
+    if (!session || session.expires_at < (Date.now()/1000 as number)) {
         redirect('/');
     }
 

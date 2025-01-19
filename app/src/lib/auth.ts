@@ -27,19 +27,20 @@ export const authOptions : NextAuthOptions = {
     callbacks: {
         async jwt({token, account}) {
             if (account) {
-                token = Object.assign({}, token, { access_token: account.access_token });
+                token = Object.assign({}, token, { access_token: account.access_token }, {expires_at: account.expires_at});
             }
             return token
         },
         async session({session, token}) {
             if(session) {
-                session = Object.assign({}, session, {access_token: token.access_token})
+                session = Object.assign({}, session, {access_token: token.access_token}, {expires_at: token.expires_at})
             }
             return session
         }
     },
     session: {
         strategy: 'jwt',
+        maxAge: 6 * 60 * 60,
     },
     secret: process.env.NEXTAUTH_SECRET,
 }
