@@ -8,9 +8,10 @@ type StravaActivityType = {
     location_state: string;
     location_country: string;
     total_elevation_gain: number;
-    start_date: string;
-    start_date_local: string;
+    start_date: number;
+    start_date_local: number;
     timezone: string;
+    start_latlng: number[];
     map: {
         id: number;
         summary_polyline: string;
