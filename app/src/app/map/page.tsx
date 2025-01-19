@@ -6,6 +6,7 @@ import TopBar from "@/components/map/topBar";
 import SessionType from "@/types/session";
 import getActivities from "@/modules/strava/getActivities";
 import Map from "@/components/map/map";
+import {MapProvider} from "@/components/contexts/mapContext";
 
 export default async function Home() {
 
@@ -17,21 +18,21 @@ export default async function Home() {
 
     const activities = await getActivities(session!.access_token);
     return (
-        <main className={'flex flex-row'}>
-            <SideNav
-                activities={activities}
-            />
-            <div className={'h-screen w-full flex flex-col'}>
-                <TopBar
-                    username={session.user!.name as string}
-                    picture={session.user!.image as string}
+        <MapProvider>
+            <main className={'flex flex-row'}>
+                <SideNav
+                    activities={activities}
                 />
-                <div className={'h-full w-full overflow-hidden '}>
-                    <Map
-                        activities={activities}
+                <div className={'h-screen w-full flex flex-col'}>
+                    <TopBar
+                        username={session.user!.name as string}
+                        picture={session.user!.image as string}
                     />
+                    <div className={'h-full w-full overflow-hidden '}>
+                        <Map activities={activities} />
+                    </div>
                 </div>
-            </div>
-        </main>
+            </main>
+        </MapProvider>
     );
 }

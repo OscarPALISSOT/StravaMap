@@ -1,11 +1,13 @@
 'use client';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import mapboxgl from 'mapbox-gl'
 import StravaActivityType from "@/types/strava/stravaActivityType";
 import polyline from '@mapbox/polyline';
 import {GeoJSON} from "geojson";
+import {useTheme} from "next-themes";
+import {useMap} from "@/components/contexts/mapContext";
 
 interface MapProps {
     activities?: StravaActivityType[];
@@ -15,8 +17,12 @@ const Map = ({activities}: MapProps) => {
 
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
+    const {resolvedTheme} = useTheme();
+    const {map, setMap} = useMap();
+
     useEffect(() => {
 
+        if (map) return;
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
         const initMap = (lngLat: [number, number]) =>{
@@ -26,6 +32,7 @@ const Map = ({activities}: MapProps) => {
                     zoom: 10,
                     maxZoom: 17,
                     center: [lngLat[0], lngLat[1]],
+                    style: 'mapbox://styles/mapbox/standard'
                 });
 
                 map.addControl(new mapboxgl.NavigationControl(), "top-right");
@@ -66,14 +73,19 @@ const Map = ({activities}: MapProps) => {
                                         'line-cap': 'round',
                                     },
                                     paint: {
-                                        'line-color': 'rgba(255,153,0,0.57)',
-                                        'line-width': 4,
+                                        'line-color': 'rgb(255,153,0)',
+                                        'line-width': 3,
                                     },
                                 });
                             });
                         }
                     });
+
+                    if (resolvedTheme === 'dark'){
+                        map.setStyle('mapbox://styles/mapbox/dark-v11')
+                    }
                 }
+                setMap(map);
                 return () => map.remove();
             }
         }
@@ -84,7 +96,6 @@ const Map = ({activities}: MapProps) => {
         } else {
             initMap([48.866667, 2.333333]);
         }
-
     }, []);
 
     return (

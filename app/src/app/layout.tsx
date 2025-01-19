@@ -3,8 +3,8 @@ import "@/styles/globals.css";
 import "@/styles/variable.css";
 import {Inter} from 'next/font/google';
 import {ReactNode} from "react";
-import SessionWrapper from "@/components/sessionWrapper";
-import ThemeProviderWrap from "@/components/themeProvider";
+import SessionWrapper from "@/components/contexts/sessionWrapper";
+import ThemeProviderWrap from "@/components/contexts/themeProvider";
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
