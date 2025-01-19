@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
             {
                 protocol: 'https',
                 hostname: 'dgalywyr863hv.cloudfront.net',
+            },
+            {
+                protocol: 'https',
+                hostname: 'api.mapbox.com',
             }
         ],
     },

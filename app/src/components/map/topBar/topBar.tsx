@@ -3,6 +3,7 @@ import Button from "@/components/button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faGear} from '@fortawesome/free-solid-svg-icons'
 import ThemeSwitch from "@/components/themeSwitch";
+import LayerSwitch from "@/components/map/layerSwitch";
 
 interface TopBarProps {
     username: string;
@@ -26,8 +27,9 @@ const TopBar = ({username, picture}: TopBarProps) => {
                 <span className={'font-semibold'}>{username}</span>
             </span>
             <span className={'h-full flex items-center gap-2'}>
-                <Button label={<FontAwesomeIcon icon={faGear} />}/>
+                <LayerSwitch/>
                 <ThemeSwitch/>
+                <Button label={<FontAwesomeIcon icon={faGear} />}/>
             </span>
         </div>
     )

@@ -1,13 +1,12 @@
 'use client';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import mapboxgl from 'mapbox-gl'
 import StravaActivityType from "@/types/strava/stravaActivityType";
-import polyline from '@mapbox/polyline';
-import {GeoJSON} from "geojson";
 import {useTheme} from "next-themes";
 import {useMap} from "@/components/contexts/mapContext";
+import displayActivities from "@/modules/mapbox/displayActivities";
 
 interface MapProps {
     activities?: StravaActivityType[];
@@ -47,43 +46,12 @@ const Map = ({activities}: MapProps) => {
                     map.setTerrain({ source: 'mapbox', exaggeration: 1 });
                 });
                 if (activities){
-                    activities.forEach((activity) => {
-                        if (activity.map.summary_polyline) {
-                            const decodedPolyline = polyline.decode(activity.map.summary_polyline);
-                            const geojson = {
-                                type: 'Feature',
-                                geometry: {
-                                    type: 'LineString',
-                                    coordinates: decodedPolyline.map(([lat, lng]) => [lng, lat]),
-                                },
-                            };
-
-                            map.on('load', () => {
-                                map.addSource(activity.id.toString(), {
-                                    type: 'geojson',
-                                    data: geojson as GeoJSON,
-                                });
-
-                                map.addLayer({
-                                    id: activity.id.toString(),
-                                    type: 'line',
-                                    source: activity.id.toString(),
-                                    layout: {
-                                        'line-join': 'round',
-                                        'line-cap': 'round',
-                                    },
-                                    paint: {
-                                        'line-color': 'rgb(255,153,0)',
-                                        'line-width': 3,
-                                    },
-                                });
-                            });
-                        }
-                    });
-
-                    if (resolvedTheme === 'dark'){
-                        map.setStyle('mapbox://styles/mapbox/dark-v11')
-                    }
+                    map.on('style.load', () => {
+                        displayActivities(map, activities)
+                    })
+                }
+                if (resolvedTheme === 'dark'){
+                    map.setStyle('mapbox://styles/mapbox/dark-v11')
                 }
                 setMap(map);
                 return () => map.remove();

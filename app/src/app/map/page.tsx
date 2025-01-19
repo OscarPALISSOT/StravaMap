@@ -2,7 +2,7 @@ import SideNav from "@/components/map/sidenav/sideNav";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/lib/auth";
 import {redirect} from "next/navigation";
-import TopBar from "@/components/map/topBar";
+import TopBar from "@/components/map/topBar/topBar";
 import SessionType from "@/types/session";
 import getActivities from "@/modules/strava/getActivities";
 import Map from "@/components/map/map";
@@ -23,12 +23,12 @@ export default async function Home() {
                 <SideNav
                     activities={activities}
                 />
-                <div className={'h-screen w-full flex flex-col'}>
+                <div className={'h-screen w-full flex flex-col relative'}>
                     <TopBar
                         username={session.user!.name as string}
                         picture={session.user!.image as string}
                     />
-                    <div className={'h-full w-full overflow-hidden '}>
+                    <div className={'h-full w-full overflow-hidden'}>
                         <Map activities={activities} />
                     </div>
                 </div>
