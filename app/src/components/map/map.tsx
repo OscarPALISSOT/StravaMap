@@ -7,9 +7,11 @@ import StravaActivityType from "@/types/strava/stravaActivityType";
 import {useTheme} from "next-themes";
 import {useMap} from "@/components/contexts/mapContext";
 import displayActivities from "@/modules/mapbox/displayActivities";
+import groupActivitiesBySportType from "@/modules/strava/groupActivitiesBySportType";
+import getSportColor from "@/modules/getSportColor";
 
 interface MapProps {
-    activities?: StravaActivityType[];
+    activities: StravaActivityType[];
 }
 
 const Map = ({activities}: MapProps) => {
@@ -18,6 +20,8 @@ const Map = ({activities}: MapProps) => {
 
     const {resolvedTheme} = useTheme();
     const {map, setMap} = useMap();
+
+    const groupedActivities = groupActivitiesBySportType(activities)
 
     useEffect(() => {
 
@@ -45,9 +49,11 @@ const Map = ({activities}: MapProps) => {
                     });
                     map.setTerrain({ source: 'mapbox', exaggeration: 1 });
                 });
-                if (activities){
+                if (groupedActivities){
                     map.on('style.load', () => {
-                        displayActivities(map, activities)
+                        groupedActivities.forEach((activitiesSportSorted, index) => {
+                            displayActivities(map, activitiesSportSorted, getSportColor(activitiesSportSorted[0].sport_type))
+                        })
                     })
                 }
                 if (resolvedTheme === 'dark'){

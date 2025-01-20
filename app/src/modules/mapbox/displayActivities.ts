@@ -2,7 +2,7 @@ import StravaActivityType from "@/types/strava/stravaActivityType";
 import polyline from "@mapbox/polyline";
 import {GeoJSON} from "geojson";
 
-function DisplayActivities(map: mapboxgl.Map, activities: StravaActivityType[]) {
+function DisplayActivities(map: mapboxgl.Map, activities: StravaActivityType[], gpxColor: string) {
     activities.forEach((activity) => {
         if (activity.map.summary_polyline) {
             const decodedPolyline = polyline.decode(activity.map.summary_polyline);
@@ -28,7 +28,7 @@ function DisplayActivities(map: mapboxgl.Map, activities: StravaActivityType[]) 
                     'line-cap': 'round',
                 },
                 paint: {
-                    'line-color': 'rgb(255,153,0)',
+                    'line-color': gpxColor,
                     'line-width': 3,
                 },
             });

@@ -6,6 +6,7 @@ import {
     faPersonSkiing,
     faPersonSkiingNordic, faPersonSnowboarding
 } from "@fortawesome/free-solid-svg-icons";
+import getSportColor from "@/modules/getSportColor";
 
 interface SportIconProps {
     sport_type: string;
@@ -13,7 +14,10 @@ interface SportIconProps {
 
 const SportIcon = ({sport_type}: SportIconProps) => {
     return (
-        <div className={'h-10 w-10 text-lg rounded-full shrink-0 bg-primary dark:bg-primaryDark group-hover:bg-primaryHover dark:group-hover:bg-primaryDarkHover flex items-center justify-center'}>
+        <div
+            className={'h-10 w-10 text-lg rounded-full shrink-0 dark:bg-primaryDark group-hover:bg-primaryHover dark:group-hover:bg-primaryDarkHover flex items-center justify-center'}
+            style={{background: getSportColor(sport_type)}}
+        >
             {sport_type === 'MountainBikeRide' && <FontAwesomeIcon icon={faBicycle} />}
             {sport_type === 'Run' && <FontAwesomeIcon icon={faPersonRunning} />}
             {sport_type === 'TrailRun' && <FontAwesomeIcon icon={faPersonRunning} />}
