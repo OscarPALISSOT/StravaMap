@@ -28,7 +28,7 @@ const Map = ({activities}: MapProps) => {
         if (map) return;
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
-        const initMap = (lngLat: [number, number]) =>{
+        const initMap = (lngLat: [number, number]) => {
             if (mapContainerRef.current) {
                 const map = new mapboxgl.Map({
                     container: mapContainerRef.current,
@@ -47,18 +47,27 @@ const Map = ({activities}: MapProps) => {
                         tileSize: 512,
                         maxZoom: 17,
                     });
-                    map.setTerrain({ source: 'mapbox', exaggeration: 1 });
+                    map.setTerrain({source: 'mapbox', exaggeration: 1});
                 });
-                if (groupedActivities){
+                if (groupedActivities) {
                     map.on('style.load', () => {
-                        groupedActivities.forEach((activitiesSportSorted, index) => {
+                        groupedActivities.forEach((activitiesSportSorted) => {
                             displayActivities(map, activitiesSportSorted, getSportColor(activitiesSportSorted[0].sport_type))
                         })
                     })
                 }
-                if (resolvedTheme === 'dark'){
+                if (resolvedTheme === 'dark') {
                     map.setStyle('mapbox://styles/mapbox/dark-v11')
                 }
+                map.addControl(
+                    new mapboxgl.GeolocateControl({
+                        positionOptions: {
+                            enableHighAccuracy: true
+                        },
+                        trackUserLocation: true,
+                        showUserHeading: true
+                    })
+                );
                 setMap(map);
                 return () => map.remove();
             }
