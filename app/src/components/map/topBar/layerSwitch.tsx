@@ -1,22 +1,20 @@
 'use client';
 
 import {useMap} from "@/components/contexts/mapContext";
-import Button from "@/components/button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLayerGroup} from "@fortawesome/free-solid-svg-icons";
 import React, {useEffect, useState} from "react";
-import {useClickOutside} from "@/hooks/useClickOutside";
-import OptionsWrapper from "@/components/map/topBar/optionsWrapper";
 import getPreviewStylesUrl from "@/modules/mapbox/getMapPreviewStylesUrl";
 import Image from "next/image";
 import StyleLayerType from "@/types/mapbox/styleLayerType";
+import TopMenu from "@/components/map/topBar/topMenu";
+import updateLayerLineColor from "@/modules/mapbox/updateLayerLineColor";
 
-const LayerSwitch = () => {
-    const [isVisible, setIsVisible] = useState(false);
+interface LayerSwitchProps {
+    activitiesIdWithSportType: {id: number, sport_type: string}[];
+}
 
-    const wrapperRef = useClickOutside(() => {
-        setIsVisible(false)
-    });
+const LayerSwitch = ({activitiesIdWithSportType}: LayerSwitchProps) => {
 
     const layers: StyleLayerType[] = [{
         layer: 'mapbox://styles/mapbox/standard',
@@ -30,36 +28,33 @@ const LayerSwitch = () => {
         layer: 'mapbox://styles/mapbox/outdoors-v12',
         label: 'Outdoor',
         preview: 'mapbox/outdoors-v12'
-    }, {layer: 'mapbox://styles/mapbox/dark-v11', label: 'Dark', preview: 'mapbox/dark-v11'}]
+    }, {
+        layer: 'mapbox://styles/mapbox/dark-v11',
+        label: 'Dark',
+        preview: 'mapbox/dark-v11'
+    }]
 
     return (
         <>
-            <Button
-                label={<FontAwesomeIcon icon={faLayerGroup}/>}
-                onClick={() => setIsVisible(!isVisible)}
-            />
-            <OptionsWrapper
-                ref={wrapperRef}
-                isVisible={isVisible}
-            >
+            <TopMenu btnLabel={<FontAwesomeIcon icon={faLayerGroup}/>}>
                 <div className={'w-full h-full p-2 flex gap-2 flex-wrap'}>
                     {layers.map((layer, index) => (
-                        <LayerWrapper layer={layer} key={index}/>
+                        <LayerWrapper layer={layer} key={index} activitiesIdWithSportType={activitiesIdWithSportType}/>
                     ))}
                 </div>
-            </OptionsWrapper>
+            </TopMenu>
         </>
-
     )
 }
 
 interface LayerWrapperProps {
     layer: StyleLayerType;
+    activitiesIdWithSportType: {id: number, sport_type: string}[];
 }
 
-const LayerWrapper = ({layer}: LayerWrapperProps) => {
+const LayerWrapper = ({layer, activitiesIdWithSportType}: LayerWrapperProps) => {
 
-    const {map} = useMap();
+    const {map, gpxLayer} = useMap();
     const defaultCoords = {lon: 2.3522, lat: 48.8566};
     const [coords, setCoords] = useState(defaultCoords);
 
@@ -87,6 +82,7 @@ const LayerWrapper = ({layer}: LayerWrapperProps) => {
             onClick={() => {
                 if (!map) return;
                 map.setStyle(layer.layer)
+                updateLayerLineColor(gpxLayer, activitiesIdWithSportType, map)
             }}
         >
             <Image

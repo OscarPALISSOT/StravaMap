@@ -6,9 +6,7 @@ import mapboxgl from 'mapbox-gl'
 import StravaActivityType from "@/types/strava/stravaActivityType";
 import {useTheme} from "next-themes";
 import {useMap} from "@/components/contexts/mapContext";
-import displayActivities from "@/modules/mapbox/displayActivities";
-import groupActivitiesBySportType from "@/modules/strava/groupActivitiesBySportType";
-import getSportColor from "@/modules/getSportColor";
+import displayActivities from "@/modules/mapbox/displayActivity";
 
 interface MapProps {
     activities: StravaActivityType[];
@@ -16,12 +14,17 @@ interface MapProps {
 
 const Map = ({activities}: MapProps) => {
 
+    const defaultLocation = [2.333333, 48.866667] as [number, number];
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
     const {resolvedTheme} = useTheme();
-    const {map, setMap} = useMap();
+    const {map, setMap, gpxLayer} = useMap();
 
-    const groupedActivities = groupActivitiesBySportType(activities)
+    const gpxLayerRef = useRef(gpxLayer);
+
+    useEffect(() => {
+        gpxLayerRef.current = gpxLayer;
+    }, [gpxLayer]);
 
     useEffect(() => {
 
@@ -39,6 +42,15 @@ const Map = ({activities}: MapProps) => {
                 });
 
                 map.addControl(new mapboxgl.NavigationControl(), "top-right");
+                map.addControl(
+                    new mapboxgl.GeolocateControl({
+                        positionOptions: {
+                            enableHighAccuracy: true
+                        },
+                        trackUserLocation: true,
+                        showUserHeading: true
+                    })
+                );
 
                 map.on('style.load', () => {
                     map.addSource('mapbox', {
@@ -49,35 +61,32 @@ const Map = ({activities}: MapProps) => {
                     });
                     map.setTerrain({source: 'mapbox', exaggeration: 1});
                 });
-                if (groupedActivities) {
-                    map.on('style.load', () => {
-                        groupedActivities.forEach((activitiesSportSorted) => {
-                            displayActivities(map, activitiesSportSorted, getSportColor(activitiesSportSorted[0].sport_type))
-                        })
+
+                map.on('style.load', () => {
+                    activities.forEach(activity => {
+                        displayActivities(map, activity, gpxLayerRef.current);
                     })
-                }
+                })
+
                 if (resolvedTheme === 'dark') {
                     map.setStyle('mapbox://styles/mapbox/dark-v11')
                 }
-                map.addControl(
-                    new mapboxgl.GeolocateControl({
-                        positionOptions: {
-                            enableHighAccuracy: true
-                        },
-                        trackUserLocation: true,
-                        showUserHeading: true
-                    })
-                );
+
                 setMap(map);
                 return () => map.remove();
             }
         }
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(e => {
-                initMap([e.coords.longitude, e.coords.latitude])
-            })
+            navigator.geolocation.getCurrentPosition(
+                e => {
+                    initMap([e.coords.longitude, e.coords.latitude])
+                },
+                err => {
+                    console.warn(`Error of geolocation : ${err.message}`);
+                    initMap(defaultLocation);
+                })
         } else {
-            initMap([48.866667, 2.333333]);
+            initMap(defaultLocation);
         }
     }, []);
 

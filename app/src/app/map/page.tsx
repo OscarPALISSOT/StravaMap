@@ -17,6 +17,10 @@ export default async function Home() {
     }
 
     const activities = await getActivities(session!.access_token);
+    const simplifiedActivities = activities.map(activity => ({
+        id: activity.id,
+        sport_type: activity.sport_type
+    }));
     return (
         <MapProvider>
             <main className={'flex flex-row'}>
@@ -27,6 +31,7 @@ export default async function Home() {
                     <TopBar
                         username={session.user!.name as string}
                         picture={session.user!.image as string}
+                        activitiesIdWithSportType={simplifiedActivities}
                     />
                     <div className={'h-full w-full overflow-hidden'}>
                         <Map activities={activities} />
