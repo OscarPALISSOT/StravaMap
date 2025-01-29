@@ -42,15 +42,23 @@ const Map = ({activities}: MapProps) => {
                 });
 
                 map.addControl(new mapboxgl.NavigationControl(), "top-right");
-                map.addControl(
-                    new mapboxgl.GeolocateControl({
-                        positionOptions: {
-                            enableHighAccuracy: true
-                        },
-                        trackUserLocation: true,
-                        showUserHeading: true
-                    })
-                );
+                map.addControl(new mapboxgl.FullscreenControl());
+                map.addControl(new mapboxgl.ScaleControl({
+                    maxWidth: 250,
+                    unit: 'metric',
+                }))
+                const geolocateControl = new mapboxgl.GeolocateControl({
+                    positionOptions: {
+                        enableHighAccuracy: true
+                    },
+                    trackUserLocation: true,
+                    showUserHeading: true,
+                    fitBoundsOptions: {
+                        zoom: 10,
+                        maxZoom: 17,
+                    }
+                })
+                map.addControl(geolocateControl)
 
                 map.on('style.load', () => {
                     map.addSource('mapbox', {
@@ -67,6 +75,10 @@ const Map = ({activities}: MapProps) => {
                         displayActivities(map, activity, gpxLayerRef.current);
                     })
                 })
+
+                map.on('load', () => {
+                    geolocateControl.trigger();
+                });
 
                 if (resolvedTheme === 'dark') {
                     map.setStyle('mapbox://styles/mapbox/dark-v11')
