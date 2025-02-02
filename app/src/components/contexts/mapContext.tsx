@@ -2,23 +2,30 @@
 
 import React, {createContext, useContext, useState} from 'react';
 import mapboxgl from "mapbox-gl";
-import gpxLayerType from "@/types/mapbox/gpxLayerType";
+import mapOptionsType from "@/types/mapbox/mapOptionsType";
 
 interface MapContextType {
     map: mapboxgl.Map | null;
     setMap: (map: mapboxgl.Map) => void;
-    gpxLayer: gpxLayerType;
-    setGpxLayer: (gpxLayer: gpxLayerType) => void;
+    mapOptions: mapOptionsType;
+    setMapOptions: (mapOptions: mapOptionsType) => void;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
 
 export const MapProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
-    const [gpxLayer, setGpxLayer] = useState<gpxLayerType>('bySportType');
+    const [mapOptions, setMapOptions] = useState<mapOptionsType>({
+        gpxLayer: 'bySportType',
+        styleLayer: {
+            layer: 'mapbox://styles/mapbox/standard',
+            label: 'Standard',
+            preview: 'mapbox/streets-v12'
+        }
+    })
 
     return (
-        <MapContext.Provider value={{map, setMap, gpxLayer, setGpxLayer}}>
+        <MapContext.Provider value={{map, setMap, mapOptions, setMapOptions}}>
             {children}
         </MapContext.Provider>
     );

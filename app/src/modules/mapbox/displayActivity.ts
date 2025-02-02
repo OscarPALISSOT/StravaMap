@@ -32,6 +32,7 @@ function DisplayActivity(map: mapboxgl.Map, activity: StravaActivityType, gpxLay
             paint: {
                 'line-width': 3,
                 'line-color': gpxHexToRGB(getSportColor(activity.sport_type), gpxLayer),
+                'line-emissive-strength': 1,
             },
         });
     }

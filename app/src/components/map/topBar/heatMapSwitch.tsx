@@ -14,7 +14,7 @@ interface HeatMapSwitchProps {
 
 const HeatMapSwitch = ({activitiesIdWithSportType}: HeatMapSwitchProps) => {
 
-    const {map, setGpxLayer} = useMap()
+    const {map, mapOptions, setMapOptions} = useMap()
 
     const lineStyle: {style: gpxLayerType, label: string }[] = [
         {style: 'bySportType', label: 'Par sport'},
@@ -32,8 +32,10 @@ const HeatMapSwitch = ({activitiesIdWithSportType}: HeatMapSwitchProps) => {
                         className={'w-[calc(50%_-_0.25rem)] rounded-md h-40 border-2 border-text dark:border-background overflow-hidden cursor-pointer relative hover:border-blue-500 dark:hover:border-blue-500'}
                         onClick={() => {
                             if (!map) return;
-                            map && updateLayerLineColor(style.style, activitiesIdWithSportType, map)
-                            setGpxLayer(style.style)
+                            updateLayerLineColor(style.style, activitiesIdWithSportType, map)
+                            const newMapOptions = mapOptions;
+                            newMapOptions.gpxLayer = style.style;
+                            setMapOptions(newMapOptions);
                         }}
                     >
                         {/*<Image*/}

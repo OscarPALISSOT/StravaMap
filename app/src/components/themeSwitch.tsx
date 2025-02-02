@@ -6,6 +6,7 @@ import Button from "@/components/button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleHalfStroke} from "@fortawesome/free-solid-svg-icons";
 import {useMap} from "@/components/contexts/mapContext";
+import updateLayerLight from "@/modules/mapbox/updateLayerLight";
 
 const ThemeSwitch = () => {
 
@@ -23,11 +24,11 @@ const ThemeSwitch = () => {
 
     const toggleTheme = () => {
         setTheme(resolvedTheme === "light" ? "dark" : "light");
-        if ((map && map.getStyle()?.name === "Mapbox Dark") && resolvedTheme === "dark") {
-            map.setStyle('mapbox://styles/mapbox/standard')
+        if (map && resolvedTheme === "dark") {
+            updateLayerLight('day', map)
         }
-        if (resolvedTheme === "light" && map) {
-            map.setStyle('mapbox://styles/mapbox/dark-v11')
+        if (map && resolvedTheme === "light") {
+            updateLayerLight('night', map)
         }
     };
 

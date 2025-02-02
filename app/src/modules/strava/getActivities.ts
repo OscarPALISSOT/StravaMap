@@ -20,8 +20,10 @@ const GetActivities = async (
         });
 
         return response.data;
-    } catch (error: any) {
-        console.error("Erreur lors de la récupération des activités Strava:", error.response?.data || error.message);
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error("Erreur lors de la récupération des activités Strava:", error.message);
+        }
         throw new Error("Impossible de récupérer les activités Strava");
     }
 };

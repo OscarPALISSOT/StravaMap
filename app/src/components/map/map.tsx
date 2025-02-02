@@ -1,12 +1,13 @@
 'use client';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {useEffect, useRef} from "react";
+import {useEffect, useMemo, useRef} from "react";
 import mapboxgl from 'mapbox-gl'
 import StravaActivityType from "@/types/strava/stravaActivityType";
 import {useTheme} from "next-themes";
 import {useMap} from "@/components/contexts/mapContext";
 import displayActivities from "@/modules/mapbox/displayActivity";
+import updateLayerLight from "@/modules/mapbox/updateLayerLight";
 
 interface MapProps {
     activities: StravaActivityType[];
@@ -14,17 +15,19 @@ interface MapProps {
 
 const Map = ({activities}: MapProps) => {
 
-    const defaultLocation = [2.333333, 48.866667] as [number, number];
+    const defaultLocation = useMemo(() => {
+        return [2.333333, 48.866667] as [number, number]
+    }, []);
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
     const {resolvedTheme} = useTheme();
-    const {map, setMap, gpxLayer} = useMap();
+    const {map, setMap, mapOptions} = useMap();
 
-    const gpxLayerRef = useRef(gpxLayer);
+    const mapOptionsRef = useRef(mapOptions);
 
     useEffect(() => {
-        gpxLayerRef.current = gpxLayer;
-    }, [gpxLayer]);
+        mapOptionsRef.current = mapOptions;
+    }, [mapOptions]);
 
     useEffect(() => {
 
@@ -35,7 +38,7 @@ const Map = ({activities}: MapProps) => {
             if (mapContainerRef.current) {
                 const map = new mapboxgl.Map({
                     container: mapContainerRef.current,
-                    zoom: 10,
+                    zoom: 11,
                     maxZoom: 17,
                     center: [lngLat[0], lngLat[1]],
                     style: 'mapbox://styles/mapbox/standard'
@@ -54,7 +57,7 @@ const Map = ({activities}: MapProps) => {
                     trackUserLocation: true,
                     showUserHeading: true,
                     fitBoundsOptions: {
-                        zoom: 10,
+                        zoom: 11,
                         maxZoom: 17,
                     }
                 })
@@ -72,17 +75,19 @@ const Map = ({activities}: MapProps) => {
 
                 map.on('style.load', () => {
                     activities.forEach(activity => {
-                        displayActivities(map, activity, gpxLayerRef.current);
+                        displayActivities(map, activity, mapOptionsRef.current.gpxLayer);
                     })
+                })
+
+                map.on('style.load', () => {
+                    if (resolvedTheme === 'dark' && mapOptionsRef.current.styleLayer.label === 'Standard') {
+                        updateLayerLight('night', map)
+                    }
                 })
 
                 map.on('load', () => {
                     geolocateControl.trigger();
                 });
-
-                if (resolvedTheme === 'dark') {
-                    map.setStyle('mapbox://styles/mapbox/dark-v11')
-                }
 
                 setMap(map);
                 return () => map.remove();
@@ -100,7 +105,7 @@ const Map = ({activities}: MapProps) => {
         } else {
             initMap(defaultLocation);
         }
-    }, []);
+    }, [map, resolvedTheme, defaultLocation, setMap, activities]);
 
     return (
         <>

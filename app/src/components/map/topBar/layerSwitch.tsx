@@ -3,7 +3,7 @@
 import {useMap} from "@/components/contexts/mapContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLayerGroup} from "@fortawesome/free-solid-svg-icons";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import getPreviewStylesUrl from "@/modules/mapbox/getMapPreviewStylesUrl";
 import Image from "next/image";
 import StyleLayerType from "@/types/mapbox/styleLayerType";
@@ -50,8 +50,10 @@ interface LayerWrapperProps {
 
 const LayerWrapper = ({layer, activitiesIdWithSportType}: LayerWrapperProps) => {
 
-    const {map, gpxLayer} = useMap();
-    const defaultCoords = {lon: 2.3522, lat: 48.8566};
+    const {map, mapOptions, setMapOptions} = useMap();
+    const defaultCoords = useMemo(() => {
+        return {lon: 2.3522, lat: 48.8566}
+    }, []);
     const [coords, setCoords] = useState(defaultCoords);
 
     useEffect(() => {
@@ -70,15 +72,18 @@ const LayerWrapper = ({layer, activitiesIdWithSportType}: LayerWrapperProps) => 
             console.warn("Geolocation is not supported!");
             setCoords(defaultCoords);
         }
-    }, []);
+    }, [defaultCoords]);
 
     return (
         <div
             className={'w-[calc(50%_-_0.25rem)] rounded-md h-40 border-2 border-text dark:border-background overflow-hidden cursor-pointer relative hover:border-blue-500 dark:hover:border-blue-500'}
             onClick={() => {
                 if (!map) return;
+                const newMapOptions = mapOptions;
+                newMapOptions.styleLayer = layer;
+                setMapOptions(newMapOptions);
                 map.setStyle(layer.layer)
-                updateLayerLineColor(gpxLayer, activitiesIdWithSportType, map)
+                updateLayerLineColor(mapOptions.gpxLayer, activitiesIdWithSportType, map)
             }}
         >
             <Image
