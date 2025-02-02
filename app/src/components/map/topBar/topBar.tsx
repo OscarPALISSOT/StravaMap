@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faGear} from '@fortawesome/free-solid-svg-icons'
 import ThemeSwitch from "@/components/themeSwitch";
 import LayerSwitch from "@/components/map/topBar/layerSwitch";
-import HeatMapToggle from "@/components/map/topBar/heatMapToggle";
+import HeatMapSwitch from "@/components/map/topBar/heatMapSwitch";
 
 interface TopBarProps {
     username: string;
@@ -30,7 +30,7 @@ const TopBar = ({username, picture, activitiesIdWithSportType}: TopBarProps) => 
                 <span className={'font-semibold'}>{username}</span>
             </span>
             <span className={'h-full flex items-center gap-2'}>
-                <HeatMapToggle activitiesIdWithSportType={activitiesIdWithSportType}/>
+                <HeatMapSwitch activitiesIdWithSportType={activitiesIdWithSportType}/>
                 <LayerSwitch activitiesIdWithSportType={activitiesIdWithSportType}/>
                 <ThemeSwitch/>
                 <Button label={<FontAwesomeIcon icon={faGear} />}/>

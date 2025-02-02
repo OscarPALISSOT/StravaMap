@@ -23,7 +23,6 @@ const ThemeSwitch = () => {
 
     const toggleTheme = () => {
         setTheme(resolvedTheme === "light" ? "dark" : "light");
-        console.log(map?.getStyle())
         if ((map && map.getStyle()?.name === "Mapbox Dark") && resolvedTheme === "dark") {
             map.setStyle('mapbox://styles/mapbox/standard')
         }

@@ -8,11 +8,11 @@ import updateLayerLineColor from "@/modules/mapbox/updateLayerLineColor";
 import React from "react";
 import gpxLayerType from "@/types/mapbox/gpxLayerType";
 
-interface HeatMapToggleProps {
+interface HeatMapSwitchProps {
     activitiesIdWithSportType: {id: number, sport_type: string}[];
 }
 
-const HeatMapToggle = ({activitiesIdWithSportType}: HeatMapToggleProps) => {
+const HeatMapSwitch = ({activitiesIdWithSportType}: HeatMapSwitchProps) => {
 
     const {map, setGpxLayer} = useMap()
 
@@ -25,7 +25,7 @@ const HeatMapToggle = ({activitiesIdWithSportType}: HeatMapToggleProps) => {
 
     return (
         <TopMenu btnLabel={<FontAwesomeIcon icon={faTemperatureLow}/>}>
-            <div className={'w-full h-full p-2 flex gap-2 flex-wrap'}>
+            <div className={'w-80 h-full p-2 flex gap-2 flex-wrap'}>
                 {lineStyle.map((style, index) => (
                     <div
                         key={index}
@@ -52,4 +52,4 @@ const HeatMapToggle = ({activitiesIdWithSportType}: HeatMapToggleProps) => {
     )
 }
 
-export default HeatMapToggle;
+export default HeatMapSwitch;

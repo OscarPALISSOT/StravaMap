@@ -28,16 +28,12 @@ const LayerSwitch = ({activitiesIdWithSportType}: LayerSwitchProps) => {
         layer: 'mapbox://styles/mapbox/outdoors-v12',
         label: 'Outdoor',
         preview: 'mapbox/outdoors-v12'
-    }, {
-        layer: 'mapbox://styles/mapbox/dark-v11',
-        label: 'Dark',
-        preview: 'mapbox/dark-v11'
     }]
 
     return (
         <>
             <TopMenu btnLabel={<FontAwesomeIcon icon={faLayerGroup}/>}>
-                <div className={'w-full h-full p-2 flex gap-2 flex-wrap'}>
+                <div className={'w-96 h-full p-2 flex gap-2'}>
                     {layers.map((layer, index) => (
                         <LayerWrapper layer={layer} key={index} activitiesIdWithSportType={activitiesIdWithSportType}/>
                     ))}
@@ -86,7 +82,7 @@ const LayerWrapper = ({layer, activitiesIdWithSportType}: LayerWrapperProps) => 
             }}
         >
             <Image
-                className={'w-full h-full object-cover rounded-md'}
+                className={'w-full h-full object-cover'}
                 src={getPreviewStylesUrl(layer.preview, coords.lon, coords.lat)}
                 alt={layer.label}
                 width={300}
