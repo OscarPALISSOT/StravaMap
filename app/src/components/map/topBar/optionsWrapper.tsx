@@ -12,7 +12,7 @@ const OptionsWrapper = ({ref, isVisible, children}: OptionsWrapperProps) => {
             {isVisible &&
                 <div
                     ref={ref}
-                    className={'absolute top-16 left-2 z-10 h-auto w-80 rounded-md bg-background dark:bg-text'}
+                    className={'absolute top-16 left-2 z-10 h-auto w-auto rounded-md bg-background dark:bg-text'}
                 >
                     {children}
                 </div>
