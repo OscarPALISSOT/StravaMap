@@ -5,6 +5,7 @@ import {faGear} from '@fortawesome/free-solid-svg-icons'
 import ThemeSwitch from "@/components/themeSwitch";
 import LayerSwitch from "@/components/map/topBar/layerSwitch";
 import HeatMapSwitch from "@/components/map/topBar/heatMapSwitch";
+import MapLabelsSwitch from "@/components/map/topBar/mapLabelsSwitch";
 
 interface TopBarProps {
     username: string;
@@ -30,6 +31,7 @@ const TopBar = ({username, picture, activitiesIdWithSportType}: TopBarProps) => 
                 <span className={'font-semibold'}>{username}</span>
             </span>
             <span className={'h-full flex items-center gap-2'}>
+                <MapLabelsSwitch/>
                 <HeatMapSwitch activitiesIdWithSportType={activitiesIdWithSportType}/>
                 <LayerSwitch activitiesIdWithSportType={activitiesIdWithSportType}/>
                 <ThemeSwitch/>

@@ -9,6 +9,7 @@ import Image from "next/image";
 import StyleLayerType from "@/types/mapbox/styleLayerType";
 import TopMenu from "@/components/map/topBar/topMenu";
 import updateLayerLineColor from "@/modules/mapbox/updateLayerLineColor";
+import MapOptionsType from "@/types/mapbox/mapOptionsType";
 
 interface LayerSwitchProps {
     activitiesIdWithSportType: {id: number, sport_type: string}[];
@@ -33,7 +34,7 @@ const LayerSwitch = ({activitiesIdWithSportType}: LayerSwitchProps) => {
     return (
         <>
             <TopMenu btnLabel={<FontAwesomeIcon icon={faLayerGroup}/>}>
-                <div className={'w-96 h-full p-2 flex gap-2'}>
+                <div className={'w-auto h-full p-2 flex gap-2'}>
                     {layers.map((layer, index) => (
                         <LayerWrapper layer={layer} key={index} activitiesIdWithSportType={activitiesIdWithSportType}/>
                     ))}
@@ -76,12 +77,13 @@ const LayerWrapper = ({layer, activitiesIdWithSportType}: LayerWrapperProps) => 
 
     return (
         <div
-            className={'w-[calc(50%_-_0.25rem)] rounded-md h-40 border-2 border-text dark:border-background overflow-hidden cursor-pointer relative hover:border-blue-500 dark:hover:border-blue-500'}
+            className={'w-40 rounded-md h-40 border-2 border-text dark:border-background overflow-hidden cursor-pointer relative hover:border-blue-500 dark:hover:border-blue-500'}
             onClick={() => {
                 if (!map) return;
-                const newMapOptions = mapOptions;
-                newMapOptions.styleLayer = layer;
-                setMapOptions(newMapOptions);
+                setMapOptions((prevMapOptions: MapOptionsType) => ({
+                    ...prevMapOptions,
+                    styleLayer: layer
+                }));
                 map.setStyle(layer.layer)
                 updateLayerLineColor(mapOptions.gpxLayer, activitiesIdWithSportType, map)
             }}

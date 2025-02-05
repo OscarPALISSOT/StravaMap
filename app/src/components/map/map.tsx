@@ -8,6 +8,7 @@ import {useTheme} from "next-themes";
 import {useMap} from "@/components/contexts/mapContext";
 import displayActivities from "@/modules/mapbox/displayActivity";
 import updateLayerLight from "@/modules/mapbox/updateLayerLight";
+import updateMapLabels from "@/modules/mapbox/updateMapLabels";
 
 interface MapProps {
     activities: StravaActivityType[];
@@ -83,6 +84,10 @@ const Map = ({activities}: MapProps) => {
                     if (resolvedTheme === 'dark' && mapOptionsRef.current.styleLayer.label === 'Standard') {
                         updateLayerLight('night', map)
                     }
+                })
+
+                map.on('style.load', () => {
+                    updateMapLabels(mapOptionsRef.current, map);
                 })
 
                 map.on('load', () => {

@@ -1,27 +1,31 @@
 'use client';
 
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, Dispatch, FC, ReactNode, SetStateAction, useContext, useState} from 'react';
 import mapboxgl from "mapbox-gl";
-import mapOptionsType from "@/types/mapbox/mapOptionsType";
+import MapOptionsType from "@/types/mapbox/mapOptionsType";
 
 interface MapContextType {
     map: mapboxgl.Map | null;
     setMap: (map: mapboxgl.Map) => void;
-    mapOptions: mapOptionsType;
-    setMapOptions: (mapOptions: mapOptionsType) => void;
+    mapOptions: MapOptionsType;
+    setMapOptions: Dispatch<SetStateAction<MapOptionsType>>;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
 
-export const MapProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+export const MapProvider: FC<{ children: ReactNode }> = ({children}) => {
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
-    const [mapOptions, setMapOptions] = useState<mapOptionsType>({
+    const [mapOptions, setMapOptions] = useState<MapOptionsType>({
         gpxLayer: 'bySportType',
         styleLayer: {
             layer: 'mapbox://styles/mapbox/standard',
             label: 'Standard',
             preview: 'mapbox/streets-v12'
-        }
+        },
+        showPOILabels: true,
+        showPlaceLabels: true,
+        showRoadLabels: true,
+        showTransitLabels: true,
     })
 
     return (
