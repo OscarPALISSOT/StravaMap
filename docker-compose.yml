@@ -11,6 +11,19 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+        
+  frontend-stravamap:
+    container_name: frontend-stravamap
+    depends_on:
+      - postgres-stravamap
+    build: frontend
+    ports:
+      - 3003:3000
+    profiles:
+      - frontend
+    env_file:
+      - .env
+
 
 volumes:
   postgres_data:
