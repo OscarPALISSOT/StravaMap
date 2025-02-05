@@ -1,5 +1,7 @@
 services:
   postgres-stravamap:
+    profiles:
+      - postgres
     image: postgres:latest
     container_name: postgres-stravamap
     restart: always
