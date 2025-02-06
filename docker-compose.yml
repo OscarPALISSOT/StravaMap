@@ -17,8 +17,7 @@ services:
   frontend-stravamap:
     container_name: frontend-stravamap
     depends_on:
-      postgres-stravamap:
-        condition: service_started
+      - postgres-stravamap
     build: frontend
     ports:
       - 3003:3000

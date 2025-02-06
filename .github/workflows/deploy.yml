@@ -52,7 +52,7 @@ jobs:
           passphrase: ${{ secrets.SERVER_PASSPHRASE }}
           script: |
             cd /home/containers/StravaMap
-            docker compose --profile frontend up -d
+            docker compose --profile frontend --profile postgres up -d
 
   migrateDB:
     runs-on: ubuntu-latest
