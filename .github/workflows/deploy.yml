@@ -39,9 +39,9 @@ jobs:
           passphrase: ${{ secrets.SERVER_PASSPHRASE }}
           script: |
             cd /home/containers/StravaMap
+            docker compose --profile frontend down --rmi all
             docker compose down --rmi all
             docker compose --profile postgres up -d
-            sleep 5
 
       - name: Build and deploy frontend
         uses: appleboy/ssh-action@master
@@ -53,7 +53,6 @@ jobs:
           script: |
             cd /home/containers/StravaMap
             docker compose --profile frontend up -d
-            sleep 5
 
   migrateDB:
     runs-on: ubuntu-latest
