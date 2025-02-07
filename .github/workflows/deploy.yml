@@ -39,8 +39,7 @@ jobs:
           passphrase: ${{ secrets.SERVER_PASSPHRASE }}
           script: |
             cd /home/containers/StravaMap
-            docker compose --profile frontend down --rmi all
-            docker compose down --rmi all
+            docker compose --profile frontend --profile postgres down --rmi all
             docker compose --profile postgres up -d
 
       - name: Build and deploy frontend
