@@ -111,7 +111,7 @@ const Map = ({activities}: MapProps) => {
         } else {
             initMap(defaultLocation);
         }
-    }, [map, resolvedTheme, defaultLocation, setMap, activities]);
+    }, [map, resolvedTheme, defaultLocation, setMap, activities, setStyleLoaded]);
 
     return (
         <>

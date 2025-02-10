@@ -25,7 +25,7 @@ const MapLabelsSwitch = () => {
         if (map && mapOptions.styleLayer.label === 'Standard') {
             updateMapLabelsBaseMap(mapOptions, map)
         }
-    }, [mapOptions, map]);
+    }, [mapOptions, map, styleLoaded]);
 
 
     return (
