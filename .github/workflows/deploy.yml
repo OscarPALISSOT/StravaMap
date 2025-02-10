@@ -1,12 +1,29 @@
 name: Deployment
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint
+        run: npm run lint
+
   pull_on_serv:
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +40,7 @@ jobs:
             git checkout main
             git pull
 
-  start_containers:
+  refresh_containers:
     runs-on: ubuntu-latest
     needs: pull_on_serv
 
@@ -54,7 +71,7 @@ jobs:
 
   migrate_DB:
     runs-on: ubuntu-latest
-    needs: start_containers
+    needs: refresh_containers
 
     steps:
       - name: Run database migrations
