@@ -10,7 +10,7 @@ import updateMapLabelsBaseMap from "@/modules/mapbox/updateMapLabelsBaseMap";
 
 const MapLabelsSwitch = () => {
 
-    const {mapOptions, setMapOptions, map} = useMap();
+    const {mapOptions, setMapOptions, map, styleLoaded} = useMap();
 
     const labels: {label: string, option: string}[] = [
         {label:"Rues", option: 'showPlaceLabels'},
@@ -21,6 +21,7 @@ const MapLabelsSwitch = () => {
 
 
     useEffect(() => {
+        if (!styleLoaded) return;
         if (map && mapOptions.styleLayer.label === 'Standard') {
             updateMapLabelsBaseMap(mapOptions, map)
         }

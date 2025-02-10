@@ -51,7 +51,7 @@ interface LayerWrapperProps {
 
 const LayerWrapper = ({layer, activitiesIdWithSportType}: LayerWrapperProps) => {
 
-    const {map, mapOptions, setMapOptions} = useMap();
+    const {map, mapOptions, setMapOptions, setStyleLoaded} = useMap();
     const defaultCoords = useMemo(() => {
         return {lon: 2.3522, lat: 48.8566}
     }, []);
@@ -80,6 +80,7 @@ const LayerWrapper = ({layer, activitiesIdWithSportType}: LayerWrapperProps) => 
             className={'w-40 rounded-md h-40 border-2 border-text dark:border-background overflow-hidden cursor-pointer relative hover:border-blue-500 dark:hover:border-blue-500'}
             onClick={() => {
                 if (!map) return;
+                setStyleLoaded(false);
                 setMapOptions((prevMapOptions: MapOptionsType) => ({
                     ...prevMapOptions,
                     styleLayer: layer

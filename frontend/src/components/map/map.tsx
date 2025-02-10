@@ -22,7 +22,7 @@ const Map = ({activities}: MapProps) => {
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
     const {resolvedTheme} = useTheme();
-    const {map, setMap, mapOptions} = useMap();
+    const {map, setMap, mapOptions, setStyleLoaded} = useMap();
 
     const mapOptionsRef = useRef(mapOptions);
 
@@ -72,6 +72,7 @@ const Map = ({activities}: MapProps) => {
                         maxZoom: 17,
                     });
                     map.setTerrain({source: 'mapbox', exaggeration: 1});
+                    setStyleLoaded(true);
                 });
 
                 map.on('style.load', () => {

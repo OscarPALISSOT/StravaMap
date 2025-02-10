@@ -9,12 +9,15 @@ interface MapContextType {
     setMap: (map: mapboxgl.Map) => void;
     mapOptions: MapOptionsType;
     setMapOptions: Dispatch<SetStateAction<MapOptionsType>>;
+    styleLoaded: boolean;
+    setStyleLoaded: Dispatch<SetStateAction<boolean>>;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
 
 export const MapProvider: FC<{ children: ReactNode }> = ({children}) => {
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
+    const [styleLoaded, setStyleLoaded] = useState<boolean>(false);
     const [mapOptions, setMapOptions] = useState<MapOptionsType>({
         gpxLayer: 'bySportType',
         styleLayer: {
@@ -29,7 +32,7 @@ export const MapProvider: FC<{ children: ReactNode }> = ({children}) => {
     })
 
     return (
-        <MapContext.Provider value={{map, setMap, mapOptions, setMapOptions}}>
+        <MapContext.Provider value={{map, setMap, mapOptions, setMapOptions, styleLoaded, setStyleLoaded}}>
             {children}
         </MapContext.Provider>
     );
