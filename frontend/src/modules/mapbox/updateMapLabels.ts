@@ -12,17 +12,15 @@ function UpdateMapLabels(mapOptions: mapOptionsType, map: mapboxgl.Map) {
 
     if (!map || !map.isStyleLoaded()) return;
 
-    Object.entries(labelLayers).forEach(([option, layer]) => {
-        const isVisible = mapOptions[option as keyof mapOptionsType] ? "visible" : "none";
-        if (map.getLayer(layer)) {
-            map.setLayoutProperty(layer, "visibility", isVisible);
-        }
-    });
+    // map.getStyle()?.layers?.filter(layer => layer['source-layer']?.includes('label')).map(item => {
+    //     console.log(item['source-layer'])
+    // })
 
-    map.style.stylesheet.layers.forEach(function(layer) {
-        if (layer.type === 'symbol') {
-            map.removeLayer(layer.id);
-        }
+    Object.entries(labelLayers).forEach(([option, keyword]) => {
+        const isVisible = mapOptions[option as keyof mapOptionsType] ? "visible" : "none";
+        map.getStyle()?.layers?.filter(layer => layer['source-layer']?.includes(keyword)).forEach((layer) => {
+            map.setLayoutProperty(layer.id, "visibility", isVisible);
+        });
     });
 }
 

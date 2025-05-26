@@ -3,9 +3,9 @@ import Button from "@/components/button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faGear} from '@fortawesome/free-solid-svg-icons'
 import ThemeSwitch from "@/components/themeSwitch";
-import LayerSwitch from "@/components/map/topBar/layerSwitch";
-import HeatMapSwitch from "@/components/map/topBar/heatMapSwitch";
-import MapLabelsSwitch from "@/components/map/topBar/mapLabelsSwitch";
+import LayerSwitch from "@/components/map/topBar/switch/layerSwitch";
+import HeatMapSwitch from "@/components/map/topBar/switch/heatMapSwitch";
+import MapLabelsSwitch from "@/components/map/topBar/switch/mapLabelsSwitch";
 
 interface TopBarProps {
     username: string;
