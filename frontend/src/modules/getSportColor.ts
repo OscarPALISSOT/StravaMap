@@ -18,8 +18,8 @@ function GetSportColor(sport_type: string): string {
         case 'Kayaking': return '#4682B4';  // Steel Blue
         case 'Kitesurf': return '#6B8E23';  // Olive Drab
         case 'MountainBikeRide': return '#4682B4';  // Steel Blue
-        case 'NordicSki': return '#708090';  // Slate Gray
-        case 'Pickleball': return '#9370DB';  // Medium Purple
+        case 'NordicSki': return '#00CED1';
+        case 'Pickleball': return '#ff00c4';  // Medium Purple
         case 'Pilates': return '#FFB6C1';  // Light Pink
         case 'Racquetball': return '#9932CC';  // Dark Orchid
         case 'Ride': return '#4169E1';  // Royal Blue

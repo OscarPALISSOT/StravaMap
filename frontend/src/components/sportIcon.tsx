@@ -28,6 +28,7 @@ const SportIcon = ({sport_type}: SportIconProps) => {
             {sport_type === 'AlpineSki' && <FontAwesomeIcon icon={faPersonSkiing} />}
             {sport_type === 'Snowboard' && <FontAwesomeIcon icon={faPersonSnowboarding} />}
             {sport_type === 'BackcountrySki' && <FontAwesomeIcon icon={faPersonSkiingNordic} />}
+            {sport_type === 'NordicSki' && <FontAwesomeIcon icon={faPersonSkiingNordic} />}
         </div>
     )
 }
