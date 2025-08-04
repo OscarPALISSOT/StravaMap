@@ -1,0 +1,12 @@
+/* Mapbox controls padding */
+
+.mapboxgl-ctrl-top-left {
+    left: calc(320px + 10px) !important;
+    top: calc(56px + 10px) !important;
+}
+.mapboxgl-ctrl-top-right {
+    top: calc(56px + 10px) !important;
+}
+.mapboxgl-ctrl-bottom-left {
+    left: calc(320px + 10px) !important;
+}

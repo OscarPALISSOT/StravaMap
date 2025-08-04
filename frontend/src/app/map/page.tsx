@@ -23,19 +23,17 @@ export default async function Home() {
     }));
     return (
         <MapProvider>
-            <main className={'flex flex-row'}>
+            <main className={'h-screen w-screen'}>
                 <SideNav
                     activities={activities}
                 />
-                <div className={'h-screen w-full flex flex-col relative'}>
-                    <TopBar
-                        username={session.user!.name as string}
-                        picture={session.user!.image as string}
-                        activitiesIdWithSportType={simplifiedActivities}
-                    />
-                    <div className={'h-full w-full overflow-hidden'}>
-                        <Map activities={activities} />
-                    </div>
+                <TopBar
+                    username={session.user!.name as string}
+                    picture={session.user!.image as string}
+                    activitiesIdWithSportType={simplifiedActivities}
+                />
+                <div className={'h-screen w-screen overflow-hidden'}>
+                    <Map activities={activities} />
                 </div>
             </main>
         </MapProvider>

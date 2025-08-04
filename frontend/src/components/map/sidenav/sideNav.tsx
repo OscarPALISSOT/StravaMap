@@ -30,7 +30,7 @@ const SideNav = ({activities}: SideNavProps) => {
 
 
     return (
-        <div className={'h-screen w-80 min-w-60 border-r border-text dark:border-background max-w-96 flex flex-col'}>
+        <div className={'fixed glass scroll-track z-50 h-screen w-80 min-w-60 border-r border-primary dark:border-primaryDark max-w-96 flex flex-col'}>
             <div className={'px-3 h-14 flex items-center justify-center shrink-0'}>
                 <SearchBar
                     placeholder={'Rechercher une activité'}

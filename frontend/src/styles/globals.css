@@ -2,46 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
-/*Reset css */
+@layer components {
+    .glass {
+        @apply backdrop-blur-xl backdrop-saturate-200 bg-background-glass;
+    }
 
-*, ::before, ::after{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-overflow-scrolling: touch;
-}
+    .hover-glass {
+        @apply cursor-pointer drop-shadow shadow-inner bg-primary-glass dark:bg-primaryDark-glass glass-border;
+    }
 
-html, body{
-  overflow-x: clip;
-  scroll-behavior: smooth;
-}
+    .hover-glass-hover {
+        @apply hover:bg-primaryHover-glass dark:hover:bg-primaryDarkHover-glass;
+    }
 
-li{
-  list-style: none;
-}
+    .floating-glass {
+        @apply glass drop-shadow shadow-inner glass-border;
+    }
 
-a{
-  color: inherit;
-  text-decoration: none;
-}
+    .scroll-track {
+        ::-webkit-scrollbar {
+            width: 17px;
+        }
 
-@media (min-width: 640px) {
+        ::-webkit-scrollbar-thumb {
+            @apply cursor-pointer drop-shadow shadow-inner bg-primaryHover dark:bg-primaryDarkHover border border-primary;
+            border-radius: 999px;
+            border: 5px solid transparent;
+            background-clip: padding-box;
+        }
 
-}
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    }
 
-@media (min-width: 768px) {
+    .glass-border {
+        position: relative;
+        border: none;
+    }
 
-}
+    .glass-border::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: linear-gradient(to bottom right, #bfbfbf  0%, rgba(115, 114, 114, 0.1) 40%, rgba(115, 114, 114, 0.1) 60%, #bfbfbf 100%);
+        -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        padding: 1px;
+    }
 
-@media (min-width: 1024px) {
+    .gradient-border {
+        position: relative;
+        border: none;
+    }
 
-}
-
-
-@media (min-width: 1280px) {
-}
-
-
-@media (min-width: 1536px) {
-
+    .gradient-border::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: linear-gradient(0.45turn, #ff5900, #ff8800, #ffb700);
+        -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        padding: 2px;
+    }
 }

@@ -1,18 +1,24 @@
-import React, {ReactNode, RefObject} from "react";
+import React, {ReactNode} from "react";
+import {useClickOutside} from "@/hooks/useClickOutside";
 
 interface OptionsWrapperProps {
-    ref: RefObject<HTMLDivElement | null>;
     isVisible: boolean;
+    setIsVisible: (visible: boolean) => void;
     children: ReactNode;
 }
 
-const OptionsWrapper = ({ref, isVisible, children}: OptionsWrapperProps) => {
+const OptionsWrapper = ({isVisible, setIsVisible, children}: OptionsWrapperProps) => {
+
+    const wrapperRef = useClickOutside(() => {
+        setIsVisible(false)
+    });
+
     return (
         <>
             {isVisible &&
                 <div
-                    ref={ref}
-                    className={'absolute top-16 left-2 z-10 h-auto w-auto rounded-md bg-background dark:bg-text'}
+                    ref={wrapperRef}
+                    className={'floating-glass absolute top-20 left-6 z-50 h-auto w-auto rounded-3xl p-4 flex flex-col gap-2'}
                 >
                     {children}
                 </div>

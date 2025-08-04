@@ -19,7 +19,7 @@ const StravaConnect =  () => {
                     onClick={() => signIn('strava', {callbackUrl: '/map'})}
                 />
             }
-            {session && <button onClick={() => signOut()}>Sign out</button>}
+            {session && <button onClick={() => signOut()} className={'text-black'}>Sign out</button>}
         </>
     )
 }
