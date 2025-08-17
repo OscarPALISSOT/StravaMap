@@ -15,6 +15,12 @@ export default {
         'primaryDarkHover': 'var(--primaryDarkHover)',
         'background': 'var(--background)',
         'text': 'var(--text)',
+        'background-glass': 'var(--background-glass)',
+        'text-glass': 'var(--text-glass)',
+        'primary-glass': 'var(--primary-glass)',
+        'primaryDark-glass': 'var(--primaryDark-glass)',
+        'primaryHover-glass': 'var(--primaryHover-glass)',
+        'primaryDarkHover-glass': 'var(--primaryDarkHover-glass)',
       },
       fontFamily: {
         geistMono: ['var(--inter)', 'serif'],

@@ -42,10 +42,11 @@ const Map = ({activities}: MapProps) => {
                     zoom: 11,
                     maxZoom: 17,
                     center: [lngLat[0], lngLat[1]],
-                    style: 'mapbox://styles/mapbox/standard'
+                    style: 'mapbox://styles/mapbox/standard',
                 });
 
-                map.addControl(new mapboxgl.NavigationControl(), "top-right");
+                map.setPadding({top: 56, left: 320})
+                map.addControl(new mapboxgl.NavigationControl());
                 map.addControl(new mapboxgl.FullscreenControl());
                 map.addControl(new mapboxgl.ScaleControl({
                     maxWidth: 250,

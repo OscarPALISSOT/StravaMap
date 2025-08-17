@@ -10,12 +10,12 @@ interface SearchBarProps {
 
 const SearchBar = ({placeholder, setSearchValue, value, setValue}: SearchBarProps) => {
     return (
-        <div className={'px-2 py-1 rounded-md bg-primary dark:bg-primaryDark hover:bg-primaryHover dark:hover:bg-primaryDarkHover font-light flex items-center justify-center gap-2 focus-within:outline w-full outline-blue-500'}>
+        <div className={'w-full px-2.5 py-2 rounded-full hover-glass font-light flex items-center justify-center gap-2 focus-within:gradient-border  outline-blue-500'}>
             <FontAwesomeIcon icon={faMagnifyingGlass}/>
             <input
                 value={value}
                 type={'text'}
-                className={'bg-transparent focus:outline-none w-full'}
+                className={'bg-transparent focus:outline-none w-full placeholder:text-text'}
                 placeholder={placeholder}
                 onChange={(e) => {
                     setSearchValue(e.target.value)

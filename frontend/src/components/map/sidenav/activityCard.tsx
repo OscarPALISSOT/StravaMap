@@ -25,7 +25,7 @@ const ActivityCard = ({activity}: ActivityCardProps) => {
                     zoom: 12.5,
                 })
             }}
-            className={'group w-full h-16 truncate text-sm font-extralight cursor-pointer hover:bg-primary dark:hover:bg-primaryDark rounded-md p-1 flex items-center justify-start gap-2'}
+            className={'group w-full h-16 truncate text-sm font-extralight hover:hover-glass hover:glass-border rounded-3xl p-1 pl-2 flex items-center justify-start gap-2'}
         >
             <SportIcon sport_type={activity.sport_type}/>
             <div className={'h-full w-full py-1 flex flex-col truncate pr-2'}>

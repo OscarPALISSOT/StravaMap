@@ -1,14 +1,20 @@
 'use client';
 
-import TopMenu from "@/components/map/topBar/topMenu";
-import {faRoad} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useMap} from "@/components/contexts/mapContext";
 import MapOptionsType from "@/types/mapbox/mapOptionsType";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import updateMapLabelsBaseMap from "@/modules/mapbox/updateMapLabelsBaseMap";
+import OptionsWrapper from "@/components/map/topBar/optionsWrapper";
+import OptionsItem from "@/components/map/topBar/optionsItem";
+import {faLayerGroup} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const MapLabelsSwitch = () => {
+interface MapLabelsWrapperProps {
+    isVisible: boolean;
+    setIsVisible: (isVisible: boolean) => void;
+}
+
+const MapLabelsWrapper = ({isVisible, setIsVisible}: MapLabelsWrapperProps) => {
 
     const {mapOptions, setMapOptions, map, styleLoaded} = useMap();
 
@@ -34,14 +40,12 @@ const MapLabelsSwitch = () => {
 
     return (
         <span className={`${mapOptions.styleLayer.label !== 'Standard' && 'hidden'}`}>
-            <TopMenu btnLabel={<FontAwesomeIcon icon={faRoad}/>}>
-                <div className={'p-2'}>
-                    {labels.map((label, index) => (
-                        <MapLabelSwitchWrapper label={label} setMapOptions={setMapOptions} mapOptions={mapOptions}
-                                               key={index}/>
-                    ))}
-                </div>
-            </TopMenu>
+            <OptionsWrapper isVisible={isVisible} setIsVisible={setIsVisible}>
+                {labels.map((label, index) => (
+                    <MapLabelSwitchWrapper label={label} setMapOptions={setMapOptions} mapOptions={mapOptions}
+                                           key={index}/>
+                ))}
+            </OptionsWrapper>
         </span>
     )
 }
@@ -80,18 +84,15 @@ const MapLabelSwitchWrapper = ({label, setMapOptions, mapOptions}: MapLabelsSwit
     }, [active, label.option, setMapOptions]);
 
     return (
-        <div className={'flex flex-row gap-3 items-center'}>
-            <input
-                className={'cursor-pointer'}
-                onChange={() => {
-                    setActive(!active);
-                }}
-                type={'checkbox'}
-                checked={active}
-            />
-            <p>{label.label}</p>
-        </div>
+        <OptionsItem
+            icon={<FontAwesomeIcon icon={faLayerGroup}/>}
+            label={label.label}
+            onClick={() => {
+                setActive(!active);
+            }}
+            selected={active}
+        />
     )
 }
 
-export default MapLabelsSwitch;
+export default MapLabelsWrapper;

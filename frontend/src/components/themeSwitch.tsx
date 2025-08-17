@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import {useTheme} from "next-themes";
-import Button from "@/components/button";
+import TopButton from "@/components/map/topBar/topButton";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleHalfStroke} from "@fortawesome/free-solid-svg-icons";
 import {useMap} from "@/components/contexts/mapContext";
@@ -33,7 +33,7 @@ const ThemeSwitch = () => {
     };
 
     return (
-        <Button
+        <TopButton
             label={<FontAwesomeIcon icon={faCircleHalfStroke}/>}
             onClick={toggleTheme}
         />

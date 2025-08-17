@@ -1,6 +1,8 @@
 import type {Metadata} from "next";
 import "@/styles/globals.css";
 import "@/styles/variable.css";
+import "@/styles/reset.css";
+import "@/styles/mapbox.css";
 import {Inter} from 'next/font/google';
 import {ReactNode} from "react";
 import SessionWrapper from "@/components/contexts/sessionWrapper";
@@ -24,7 +26,7 @@ export default function RootLayout({children}: Readonly<{ children: ReactNode; }
     return (
         <SessionWrapper>
             <html lang="en" suppressHydrationWarning={true}>
-            <body className={`${inter.variable} text-text dark:text-background`}>
+            <body className={`${inter.variable} text-text`}>
             <main className={'bg-background dark:bg-text'}>
                 <ThemeProviderWrap>
                     {children}
