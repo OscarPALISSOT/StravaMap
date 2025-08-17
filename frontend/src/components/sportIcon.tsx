@@ -4,7 +4,7 @@ import {
     faPersonHiking,
     faPersonRunning,
     faPersonSkiing,
-    faPersonSkiingNordic, faPersonSnowboarding
+    faPersonSkiingNordic, faPersonSnowboarding, faPersonSwimming
 } from "@fortawesome/free-solid-svg-icons";
 import getSportColor from "@/modules/getSportColor";
 
@@ -29,6 +29,7 @@ const SportIcon = ({sport_type}: SportIconProps) => {
             {sport_type === 'Snowboard' && <FontAwesomeIcon icon={faPersonSnowboarding} />}
             {sport_type === 'BackcountrySki' && <FontAwesomeIcon icon={faPersonSkiingNordic} />}
             {sport_type === 'NordicSki' && <FontAwesomeIcon icon={faPersonSkiingNordic} />}
+            {sport_type === 'Swim' && <FontAwesomeIcon icon={faPersonSwimming} />}
         </div>
     )
 }
