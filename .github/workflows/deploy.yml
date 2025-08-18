@@ -60,10 +60,10 @@ jobs:
           passphrase: ${{ secrets.SERVER_PASSPHRASE }}
           script: |
             cd /home/containers/StravaMap
-            docker compose --profile frontend --profile postgres down --rmi all
+            docker compose --profile web --profile postgres down --rmi all
             docker compose --profile postgres up -d
 
-      - name: Build and deploy frontend
+      - name: Build and deploy web ui
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -72,7 +72,7 @@ jobs:
           passphrase: ${{ secrets.SERVER_PASSPHRASE }}
           script: |
             cd /home/containers/StravaMap
-            docker compose --profile frontend --profile postgres up -d
+            docker compose --profile web --profile postgres up -d
 
   migrate_DB:
     runs-on: ubuntu-latest

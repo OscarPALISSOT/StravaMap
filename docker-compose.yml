@@ -14,15 +14,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
         
-  frontend-stravamap:
-    container_name: frontend-stravamap
+  web-stravamap:
+    container_name: web-stravamap
     depends_on:
       - postgres-stravamap
-    build: frontend
+    build: ui/web
     ports:
       - 3003:3000
     profiles:
-      - frontend
+      - web
     env_file:
       - .env
 
