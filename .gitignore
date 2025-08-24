@@ -4,3 +4,4 @@
 
 #conf
 .env
+.DS_Store
