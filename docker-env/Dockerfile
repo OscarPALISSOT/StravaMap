@@ -13,16 +13,24 @@ RUN adduser -D -s /bin/bash developer \
 USER developer
 WORKDIR /home/developer/WKS
 
-# Install Oh My Zsh unattended
+# Install Oh My Zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-# Install Powerlevel10k theme
+# Install Powerlevel10k
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k \
     && sed -i 's|^ZSH_THEME=.*|ZSH_THEME="powerlevel10k/powerlevel10k"|' $HOME/.zshrc
 
 # Configure npm global path
 RUN echo 'export PATH=$HOME/.npm-global/bin:$PATH' >> $HOME/.zshrc \
     && npm config set prefix '~/.npm-global'
+
+# Ensure persistent Powerlevel10k config file
+RUN touch $HOME/.p10k.zsh \
+    && echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> $HOME/.zshrc
+
+# Install Zsh plugins
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions \
+    && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 # Verify node & npm versions
 RUN node -v && npm -v
