@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "env:build": "./docker-env/build-dev.sh",
-    "env:lauch": "./docker-env/lauch-dev.sh",
+    "env:lauch": "cd docker-env && docker compose up -d && docker exec -it node-dev zsh; docker compose stop",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Oscar PALISSOT",
