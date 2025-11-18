@@ -1,6 +1,7 @@
-import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from "../../libs/jwt/jwt-auth.guard";
+import { StravaAuthGuard } from '../../libs/strava/strava-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -32,4 +33,29 @@ export class AuthController {
   }) {
     return req.user;
   };
+
+  @Get('strava')
+  @UseGuards(StravaAuthGuard)
+  async stravaLogin() {
+    return;
+  }
+
+  // Callback URL
+  @Get('strava/callback')
+  @UseGuards(StravaAuthGuard)
+  async stravaCallback(@Req() req) {
+    const strava = req.user;
+
+    const email = `${strava.athlete.id}@strava.local`;
+
+    const tokens = await this.authService.socialLogin(
+      email,
+      strava.athlete,
+      'strava',
+      strava.accessToken,
+      strava.refreshToken
+    );
+
+    return tokens;
+  }
 }
