@@ -25,6 +25,7 @@ services:
     working_dir: /home/developer/WKS
     ports:
       - ${AUTHENTICATION_SERVICE_PORT}:${AUTHENTICATION_SERVICE_PORT}
+      - ${MOCK_SERVICE_PORT}:${MOCK_SERVICE_PORT}
     volumes:
       - ../:/home/developer/WKS
       - ./docker-dev-config/.zshrc:/home/developer/.zshrc
