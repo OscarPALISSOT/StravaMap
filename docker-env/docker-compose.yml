@@ -1,6 +1,7 @@
 services:
   postgres-auth-dev:
     image: postgres:latest
+    container_name: postgres-auth-dev
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

@@ -2,6 +2,7 @@ import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from "../../libs/jwt/jwt-auth.guard";
 import { StravaAuthGuard } from '../../libs/strava/strava-auth.guard';
+import { AccountProvider } from 'src/libs/account-provider.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -51,7 +52,7 @@ export class AuthController {
     const tokens = await this.authService.socialLogin(
       email,
       strava.athlete,
-      'strava',
+      AccountProvider.Strava,
       strava.accessToken,
       strava.refreshToken
     );
