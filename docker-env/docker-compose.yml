@@ -25,11 +25,21 @@ services:
     working_dir: /home/developer/WKS
     ports:
       - ${AUTHENTICATION_SERVICE_PORT}:${AUTHENTICATION_SERVICE_PORT}
-      - ${MOCK_SERVICE_PORT}:${MOCK_SERVICE_PORT}
     volumes:
       - ../:/home/developer/WKS
       - ./docker-dev-config/.zshrc:/home/developer/.zshrc
       - ./docker-dev-config/.p10k.zsh:/home/developer/.p10k.zsh
+    networks:
+      - shared-network
+
+  mock-service:
+    build:
+      context: ../backend/mock-service
+      dockerfile: Dockerfile
+    container_name: mock-service
+    env_file: ../backend/mock-service/.env
+    ports:
+      - ${MOCK_SERVICE_PORT}:${MOCK_SERVICE_PORT}
     networks:
       - shared-network
 
