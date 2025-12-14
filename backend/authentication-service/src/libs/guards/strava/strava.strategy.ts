@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-oauth2';
 import axios from 'axios';
+import { Strategy } from 'passport-oauth2';
+import { OAuthProfile } from 'src/libs/types/oauth-profile';
 
 @Injectable()
 export class StravaStrategy extends PassportStrategy(Strategy, 'strava') {
@@ -16,18 +17,35 @@ export class StravaStrategy extends PassportStrategy(Strategy, 'strava') {
     });
   }
 
-  async validate(accessToken: string, refreshToken: string): Promise<any> {
-    const { data: athlete } = await axios.get(
-      process.env.STRAVA_API_BASE_URL + '/athlete',
-      {
+  userProfile(accessToken: string, done: Function) {
+    axios
+      .get(process.env.STRAVA_BASE_URL + '/api/v3/athlete', {
         headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+      })
+      .then(res => done(null, res.data))
+      .catch(err => done(err));
+  }
 
+
+  async validate(
+    accessToken: string,
+    refreshToken: string,
+    athlete: OAuthProfile,
+  ): Promise<{
+    providerId: string;
+    profile: OAuthProfile;
+    accessToken: string;
+    refreshToken: string;
+    expiresAt: string;
+  }> {
+    
+    const expiresAt = '21600';
     return {
+      providerId: (athlete.id as number).toString(),
+      profile: athlete,
       accessToken,
       refreshToken,
-      athlete,
+      expiresAt,
     };
   }
 }
