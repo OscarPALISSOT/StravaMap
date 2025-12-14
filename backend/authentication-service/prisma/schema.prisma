@@ -8,27 +8,27 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  password  String?
-  accounts  Account[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
+  id           String         @id @default(cuid())
+  email        String         @unique
+  password     String?
+  accounts     Account[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
   RefreshToken RefreshToken[]
 }
 
 model Account {
-  id             String   @id @default(cuid())
-  provider       String
-  providerId     String
-  accessToken    String?
-  refreshToken   String?
-  expiresAt      DateTime?
-  user           User     @relation(fields: [userId], references: [id])
-  userId         String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id           String    @id @default(cuid())
+  provider     String
+  providerId   String
+  profile      Json?
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime?
+  user         User      @relation(fields: [userId], references: [id])
+  userId       String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   @@unique([provider, providerId])
 }

@@ -1,3 +1,3 @@
 export enum AccountProvider {
-    Strava = 'strava'
+  Strava = 'strava',
 }

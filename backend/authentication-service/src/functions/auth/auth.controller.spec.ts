@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from '../../libs/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../libs/guards/jwt/jwt-auth.guard';
 import { ExecutionContext } from '@nestjs/common';
+import { AccountProvider } from '../../libs/account-provider.enum';
+import { DynamicAuthGuard } from '../../libs/guards/dynamic/dynamic-auth.guard';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -17,21 +19,27 @@ describe('AuthController', () => {
 
   const mockJwtAuthGuard = {
     canActivate: jest.fn((context: ExecutionContext) => {
-      const req = context.switchToHttp().getRequest();
+      const req: { user: { email: string; password: string } } = context
+        .switchToHttp()
+        .getRequest();
       req.user = { email: 'test@example.com', password: 'hashedpassword' };
       return true;
     }),
   };
 
+  const mockDynamicAuthGuard = {
+    canActivate: jest.fn(() => true),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [
-        { provide: AuthService, useValue: mockAuthService },
-      ],
+      providers: [{ provide: AuthService, useValue: mockAuthService }],
     })
       .overrideGuard(JwtAuthGuard)
       .useValue(mockJwtAuthGuard)
+      .overrideGuard(DynamicAuthGuard)
+      .useValue(mockDynamicAuthGuard)
       .compile();
 
     controller = module.get<AuthController>(AuthController);
@@ -46,7 +54,7 @@ describe('AuthController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('login', () => {
+  describe('email login', () => {
     it('should call authService.login with email and password', async () => {
       //Given
       const result = { accessToken: 'token', refreshToken: 'refresh' };
@@ -55,14 +63,15 @@ describe('AuthController', () => {
 
       //When
       const login = await controller.login(body);
-      
+
       //Then
       expect(login).toEqual(result);
-      expect(mockAuthService.login).toHaveBeenCalledWith(body.email, body.password);
+      expect(mockAuthService.login).toHaveBeenCalledWith(
+        body.email,
+        body.password,
+      );
     });
-  });
 
-  describe('register', () => {
     it('should call authService.register with email and password', async () => {
       //Given
       const result = { id: 1, email: 'test@example.com' };
@@ -74,11 +83,27 @@ describe('AuthController', () => {
 
       //Then
       expect(register).toEqual(result);
-      expect(mockAuthService.register).toHaveBeenCalledWith(body.email, body.password);
+      expect(mockAuthService.register).toHaveBeenCalledWith(
+        body.email,
+        body.password,
+      );
+    });
+
+    it('should return user from request', () => {
+      //Given
+      const req = {
+        user: { email: 'test@example.com', password: 'hashedpassword' },
+      };
+
+      //When
+      const me = controller.me(req);
+
+      //Then
+      expect(me).toEqual(req.user);
     });
   });
 
-  describe('refresh', () => {
+  describe('tokens', () => {
     it('should refresh tokens', async () => {
       //Given
       const payload = { sub: 1, email: 'test@example.com' };
@@ -92,21 +117,61 @@ describe('AuthController', () => {
 
       //Then
       expect(refresh).toEqual(tokens);
-      expect(mockAuthService.refreshToken).toHaveBeenCalledWith(body.refreshToken);
-      expect(mockAuthService.getTokens).toHaveBeenCalledWith(payload.sub, payload.email);
+      expect(mockAuthService.refreshToken).toHaveBeenCalledWith(
+        body.refreshToken,
+      );
+      expect(mockAuthService.getTokens).toHaveBeenCalledWith(
+        payload.sub,
+        payload.email,
+      );
     });
   });
 
-  describe('me', () => {
-    it('should return user from request', async () => {
+  describe('oauth login', () => {
+    it('should be defined and callable', async () => {
+      // The method has no logic, but must not throw
+      expect(await controller.socialRedirect()).toBeUndefined();
+    });
+
+    it('should call authService.oauthLogin with provider data', async () => {
       //Given
-      const req = { user: { email: 'test@example.com', password: 'hashedpassword' } };
+      const provider = AccountProvider.Strava;
+
+      const req = {
+        user: {
+          providerId: 'STRAVA123',
+          profile: { email: 'john@example.com', foo: 'bar' },
+          accessToken: 'ACCESS123',
+          refreshToken: 'REFRESH123',
+          expiresAt: 999999,
+        },
+      };
+
+      const expectedResult = {
+        accessToken: 'local-jwt-access',
+        refreshToken: 'local-jwt-refresh',
+      };
+
+      const oauthLogin = (authService.oauthLogin = jest
+        .fn()
+        .mockResolvedValue(expectedResult));
 
       //When
-      const me = await controller.me(req);
+      const response = await controller.socialCallback(req, provider);
 
       //Then
-      expect(me).toEqual(req.user);
+      expect(oauthLogin).toHaveBeenCalledWith({
+        provider,
+        providerId: 'STRAVA123',
+        profile: { email: 'john@example.com', foo: 'bar' },
+        tokens: {
+          accessToken: 'ACCESS123',
+          refreshToken: 'REFRESH123',
+          expiresAt: 999999,
+        },
+      });
+
+      expect(response).toEqual(expectedResult);
     });
   });
 });
