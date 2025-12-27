@@ -32,17 +32,6 @@ services:
     networks:
       - shared-network
 
-  mock-service:
-    build:
-      context: ../backend/mock-service
-      dockerfile: Dockerfile
-    container_name: mock-service
-    env_file: ../backend/mock-service/.env
-    ports:
-      - ${MOCK_SERVICE_PORT}:${MOCK_SERVICE_PORT}
-    networks:
-      - shared-network
-
 volumes:
   postgres_data:
     name: stravamap_dev_postgres_auth_data

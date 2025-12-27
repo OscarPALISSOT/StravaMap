@@ -15,7 +15,7 @@ export class DynamicAuthGuard implements CanActivate {
     req.authOptions = {
       session: false,
       scope: req.query.scope,
-    }
+    };
 
     return guard.canActivate(context);
   }

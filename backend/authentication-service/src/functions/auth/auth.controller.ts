@@ -51,7 +51,7 @@ export class AuthController {
     @Param('provider') provider: AccountProvider,
   ) {
     const payload = req.user;
-    
+
     const result = await this.authService.oauthLogin({
       provider,
       providerId: payload.providerId,
