@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AuthModule } from '../src/functions/auth/auth.module';
 import { PrismaService } from '../src/prisma.service';
 import { App } from 'supertest/types';
+import { Account, User } from '@prisma/client';
 
 describe('OAuth Social Login – E2E', () => {
   let app: INestApplication;
@@ -44,33 +45,49 @@ describe('OAuth Social Login – E2E', () => {
       //Given
       prisma.account.findUnique = jest.fn().mockResolvedValue(null);
       prisma.user.findUnique = jest.fn().mockResolvedValue(null);
-      prisma.user.create = jest.fn().mockImplementation(({ data }) => {
-        return {
-          id: 'mock-user-id',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          ...data,
-        };
-      });
-      prisma.account.create = jest.fn().mockImplementation(({ data }) => {
-        return {
-          id: 'mock-account-id',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          ...data,
-          user: {
-            id: 'mock-user-id',
-            email: 'john.doe@test.dev',
+      prisma.user.create = jest
+        .fn()
+        .mockImplementation(
+          ({
+            data,
+          }: {
+            data: Omit<User, 'id' | 'createdAt' | 'updatedAt'>;
+          }) => {
+            return {
+              id: 'mock-user-id',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              ...data,
+            };
           },
-        };
-      });
+        );
+      prisma.account.create = jest
+        .fn()
+        .mockImplementation(
+          ({
+            data,
+          }: {
+            data: Omit<Account, 'id' | 'createdAt' | 'updatedAt'>;
+          }) => {
+            return {
+              id: 'mock-account-id',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              ...data,
+              user: {
+                id: 'mock-user-id',
+                email: 'john.doe@test.dev',
+              },
+            };
+          },
+        );
 
       //When
       const res = await request(app.getHttpServer() as App)
         .get('/auth/strava/callback')
         .query({ code: 'mock-code' })
         .redirects(1);
-        
+
       //Then
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty('accessToken');
@@ -80,11 +97,10 @@ describe('OAuth Social Login – E2E', () => {
       expect(prisma.account.create).toHaveBeenCalled();
     });
 
-
-    it('should perform Strava OAuth create account complete flow', async () => {
+    it('should perform Strava OAuth log in complete flow', async () => {
       //Given
       prisma.account.findUnique = jest.fn().mockResolvedValue({
-          id: 'mock-account-id',
+        id: 'mock-account-id',
         createdAt: '2025-12-14T23:04:35.708Z',
         updatedAt: '2025-12-14T23:04:35.708Z',
         provider: 'strava',
@@ -112,26 +128,34 @@ describe('OAuth Social Login – E2E', () => {
           profile_medium: 'https://picsum.photos/60',
           profile: 'https://picsum.photos/124',
           friend: null,
-          follower: null
+          follower: null,
         },
         userId: 'mock-user-id',
-          user: {
-            id: 'mock-user-id',
-            email: 'john.doe@test.dev',
-          },
-        });
-      prisma.account.update = jest.fn().mockImplementation(({ data }) => {
-        return {
-          id: 'mock-account-id',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          ...data,
-          user: {
-            id: 'mock-user-id',
-            email: 'john.doe@test.dev',
-          },
-        };
+        user: {
+          id: 'mock-user-id',
+          email: 'john.doe@test.dev',
+        },
       });
+      prisma.account.update = jest
+        .fn()
+        .mockImplementation(
+          ({
+            data,
+          }: {
+            data: Omit<Account, 'id' | 'createdAt' | 'updatedAt'>;
+          }) => {
+            return {
+              id: 'mock-account-id',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              ...data,
+              user: {
+                id: 'mock-user-id',
+                email: 'john.doe@test.dev',
+              },
+            };
+          },
+        );
 
       //When
       const res = await request(app.getHttpServer() as App)

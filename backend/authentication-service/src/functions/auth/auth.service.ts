@@ -121,7 +121,6 @@ export class AuthService {
       expiresAt?: number;
     };
   }) {
-    
     let social = await this.prisma.account.findUnique({
       where: { provider_providerId: { provider, providerId } },
       include: { user: true },
@@ -154,7 +153,6 @@ export class AuthService {
         },
         include: { user: true },
       });
-      
     } else {
       const expiresAt = tokens?.expiresAt ?? social.expiresAt;
       const expiresAtDate = expiresAt ? new Date(expiresAt) : null;

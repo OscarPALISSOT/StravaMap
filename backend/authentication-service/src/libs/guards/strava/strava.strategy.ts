@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Strategy } from 'passport-oauth2';
 import { OAuthProfile } from 'src/libs/types/oauth-profile';
 
@@ -17,28 +17,29 @@ export class StravaStrategy extends PassportStrategy(Strategy, 'strava') {
     });
   }
 
-  userProfile(accessToken: string, done: Function) {
+  userProfile(
+    accessToken: string,
+    done: (err: Error | null, profile?: OAuthProfile) => void,
+  ) {
     axios
-      .get(process.env.STRAVA_BASE_URL + '/api/v3/athlete', {
+      .get<OAuthProfile>(process.env.STRAVA_BASE_URL + '/api/v3/athlete', {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
-      .then(res => done(null, res.data))
-      .catch(err => done(err));
+      .then((res) => done(null, res.data))
+      .catch((err: AxiosError) => done(err));
   }
 
-
-  async validate(
+  validate(
     accessToken: string,
     refreshToken: string,
     athlete: OAuthProfile,
-  ): Promise<{
+  ): {
     providerId: string;
     profile: OAuthProfile;
     accessToken: string;
     refreshToken: string;
     expiresAt: string;
-  }> {
-    
+  } {
     const expiresAt = '21600';
     return {
       providerId: (athlete.id as number).toString(),
