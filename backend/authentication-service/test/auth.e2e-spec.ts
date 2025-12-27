@@ -70,7 +70,7 @@ describe('OAuth Social Login – E2E', () => {
         .get('/auth/strava/callback')
         .query({ code: 'mock-code' })
         .redirects(1);
-        
+
       //Then
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty('accessToken');
@@ -81,10 +81,10 @@ describe('OAuth Social Login – E2E', () => {
     });
 
 
-    it('should perform Strava OAuth create account complete flow', async () => {
+    it('should perform Strava OAuth log in complete flow', async () => {
       //Given
       prisma.account.findUnique = jest.fn().mockResolvedValue({
-          id: 'mock-account-id',
+        id: 'mock-account-id',
         createdAt: '2025-12-14T23:04:35.708Z',
         updatedAt: '2025-12-14T23:04:35.708Z',
         provider: 'strava',
@@ -115,11 +115,11 @@ describe('OAuth Social Login – E2E', () => {
           follower: null
         },
         userId: 'mock-user-id',
-          user: {
-            id: 'mock-user-id',
-            email: 'john.doe@test.dev',
-          },
-        });
+        user: {
+          id: 'mock-user-id',
+          email: 'john.doe@test.dev',
+        },
+      });
       prisma.account.update = jest.fn().mockImplementation(({ data }) => {
         return {
           id: 'mock-account-id',
