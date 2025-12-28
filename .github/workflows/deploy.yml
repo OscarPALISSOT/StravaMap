@@ -1,4 +1,4 @@
-name: Deployment
+name: UI web deployment
 
 on:
   release:
