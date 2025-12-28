@@ -1,4 +1,19 @@
 services:
+
+  reverse-proxy-mock-service:
+    image: caddy:latest
+    container_name: reverse-proxy-mock-service
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - shared-network
+
   mock-service:
     build:
       dockerfile: Dockerfile
@@ -12,6 +27,8 @@ services:
 volumes:
   postgres_data:
     name: stravamap_dev_postgres_auth_data
+  caddy_data:
+  caddy_config:
 
 networks:
   shared-network:
