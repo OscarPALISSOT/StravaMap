@@ -1,0 +1,3 @@
+mock-service.stravamap.oscarpalissot.fr {
+  reverse_proxy oscarpalissot.fr:3001
+}
