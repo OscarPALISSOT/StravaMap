@@ -14,6 +14,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          # get all commit history for git diff
+          fetch-depth: 0 
 
       - name: Check for changes in services
         id: detect-changes
@@ -46,6 +49,8 @@ jobs:
 
   check-required-jobs:
     needs: [detect-changes, activity-service-tests, authentication-service-tests]
+    # force job execution even if needed jobs are skipped
+    if: always()  
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
