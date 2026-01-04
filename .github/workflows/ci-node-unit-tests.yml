@@ -1,0 +1,36 @@
+name: Reusable Node.js CI
+
+on:
+  workflow_call:
+    inputs:
+      service-path:
+        description: 'path to the node js micro service to test'
+        required: true
+        type: string
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: |
+          cd ${{ inputs.service-path }}
+          npm install
+
+      - name: Lint
+        run: |
+          cd ${{ inputs.service-path }}
+          npm run lint
+
+      - name: Test
+        run: |
+          cd ${{ inputs.service-path }}
+          npm run test
