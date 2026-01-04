@@ -1,0 +1,66 @@
+name: Main CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      activity-service: ${{ steps.detect-changes.outputs.activity-service }}
+      authentication-service: ${{ steps.detect-changes.outputs.authentication-service }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check for changes in services
+        id: detect-changes
+        run: |
+          if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -q '^backend/activity-service/'; then
+            echo "activity-service=true" >> $GITHUB_OUTPUT
+          else
+            echo "activity-service=false" >> $GITHUB_OUTPUT
+          fi
+
+          if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -q '^backend/authentication-service/'; then
+            echo "authentication-service=true" >> $GITHUB_OUTPUT
+          else
+            echo "authentication-service=false" >> $GITHUB_OUTPUT
+          fi
+
+  activity-service-tests:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.activity-service == 'true'
+    uses: ./.github/workflows/ci-node-unit-tests.yml
+    with:
+      service-path: 'backend/activity-service'
+
+  authentication-service-tests:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.authentication-service == 'true'
+    uses: ./.github/workflows/ci-node-unit-tests.yml
+    with:
+      service-path: 'backend/authentication-service'
+
+  check-required-jobs:
+    needs: [detect-changes, activity-service-tests, authentication-service-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check if required jobs succeeded or were not needed
+        run: |
+          if [ "${{ needs.detect-changes.outputs.activity-service }}" = "true" ] && [ "${{ needs.activity-service-tests.result }}" != "success" ]; then
+            echo "Required job activity-service-tests failed or was not executed."
+            exit 1
+          fi
+
+          if [ "${{ needs.detect-changes.outputs.authentication-service }}" = "true" ] && [ "${{ needs.authentication-service-tests.result }}" != "success" ]; then
+            echo "Required job authentication-service-tests failed or was not executed."
+            exit 1
+          fi
+
+          echo "All required jobs succeeded or were not needed."
