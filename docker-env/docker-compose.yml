@@ -13,6 +13,20 @@ services:
     networks:
       - shared-network
 
+  mongodb-activity-dev:
+    image: mongo:latest
+    container_name: mongodb-activity-dev
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks:
+      - shared-network
+
   dev:
     build:
       dockerfile: Dockerfile
@@ -25,6 +39,7 @@ services:
     working_dir: /home/developer/WKS
     ports:
       - ${AUTHENTICATION_SERVICE_PORT}:${AUTHENTICATION_SERVICE_PORT}
+      - ${ACTIVITY_SERVICE_PORT}:${ACTIVITY_SERVICE_PORT}
     volumes:
       - ../:/home/developer/WKS
       - ./docker-dev-config/.zshrc:/home/developer/.zshrc
@@ -35,6 +50,8 @@ services:
 volumes:
   postgres_data:
     name: stravamap_dev_postgres_auth_data
+  mongodb_data:
+    name: stravamap_dev_mongodb-activity_data
 
 networks:
   shared-network:
